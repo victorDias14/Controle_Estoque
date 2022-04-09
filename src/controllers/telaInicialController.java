@@ -42,6 +42,6 @@ public class telaInicialController {
 
     @FXML
     void cadUsuario(ActionEvent event) {
-
+        App.changeScreen("addUsuario");
     }
 }
