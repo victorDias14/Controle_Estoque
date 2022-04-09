@@ -37,7 +37,7 @@ public class telaInicialController {
 
     @FXML
     void cadSetor(ActionEvent event) {
-
+        App.changeScreen("addSetor");
     }
 
     @FXML

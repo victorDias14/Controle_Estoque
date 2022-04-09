@@ -15,6 +15,7 @@ public class App extends Application {
     private static Scene adicionarProduto;
     private static Scene adicionarFornecedor;
     private static Scene adicionarUsuario;
+    private static Scene adicionarSetor;
     
 
     @Override
@@ -36,6 +37,9 @@ public class App extends Application {
 
         Parent fxmlAdicionarUsuario = FXMLLoader.load(getClass().getResource("/views/AdicionarUsuario.fxml"));
         adicionarUsuario = new Scene(fxmlAdicionarUsuario);
+        
+        Parent fxmlAdicionarSetor = FXMLLoader.load(getClass().getResource("/views/AdicionarSetor.fxml"));
+        adicionarSetor = new Scene(fxmlAdicionarSetor);
 
         primaryStage.setScene(telaInicial);     
         primaryStage.show();
@@ -59,6 +63,10 @@ public class App extends Application {
 
             case "addUsuario":
                 stage.setScene(adicionarUsuario);
+                break;
+
+            case "addSetor":
+                stage.setScene(adicionarSetor);
                 break;
 
         }
