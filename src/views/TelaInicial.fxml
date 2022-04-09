@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.telaInicialController">
    <top>
-      <Pane prefHeight="125.0" prefWidth="1000.0" style="-fx-border-color: #0598ff; -fx-border-width: 2;" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="100.0" fitWidth="127.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/add.png" />
-               </image>
-            </ImageView>
-         </children>
-      </Pane>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Cadastrar">
+            <items>
+              <MenuItem fx:id="btnProduto" mnemonicParsing="false" onAction="#cadProduto" text="Produto" />
+                  <MenuItem fx:id="btnFornecedor" mnemonicParsing="false" onAction="#cadFornecedor" text="Fornecedor" />
+                  <MenuItem fx:id="btnUsuario" mnemonicParsing="false" onAction="#cadUsuario" text="Usuário" />
+                  <MenuItem fx:id="btnSetor" mnemonicParsing="false" onAction="#cadSetor" text="Setor" />
+                  <MenuItem fx:id="btnLoja" mnemonicParsing="false" onAction="#cadLoja" text="Loja" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Estoque">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Entrada" />
+                  <MenuItem mnemonicParsing="false" text="Saída" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Relatórios">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
    </top>
 </BorderPane>

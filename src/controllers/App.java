@@ -9,9 +9,13 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     private static Stage stage;
-
+    
+    // PRIMARY STAGE
     private static Scene login;
     private static Scene telaInicial;
+
+    // SECOND STAGE
+    private static Scene adicionarProduto;
     
 
     @Override
@@ -25,7 +29,10 @@ public class App extends Application {
         Parent fxmlTelaInicial = FXMLLoader.load(getClass().getResource("/views/TelaInicial.fxml"));
         telaInicial = new Scene(fxmlTelaInicial);
 
-        primaryStage.setScene(login);     
+        Parent fxmlAdicionarProduto = FXMLLoader.load(getClass().getResource("/views/AdicionarProduto.fxml"));
+        adicionarProduto = new Scene(fxmlAdicionarProduto);
+
+        primaryStage.setScene(telaInicial);     
         primaryStage.show();
         
     }
@@ -35,6 +42,10 @@ public class App extends Application {
         switch (scr) {
             case "main":
                 stage.setScene(telaInicial);
+                break;
+
+            case "addProduto":
+                stage.setScene(adicionarProduto);
                 break;
         }
     }
