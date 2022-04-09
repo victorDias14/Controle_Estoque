@@ -22,7 +22,7 @@ public class telaInicialController {
 
     @FXML
     void cadFornecedor(ActionEvent event) {
-
+        App.changeScreen("addFornecedor");
     }
 
     @FXML

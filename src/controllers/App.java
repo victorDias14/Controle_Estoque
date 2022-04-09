@@ -10,12 +10,10 @@ public class App extends Application {
 
     private static Stage stage;
     
-    // PRIMARY STAGE
-    private static Scene login;
+    //private static Scene login;
     private static Scene telaInicial;
-
-    // SECOND STAGE
     private static Scene adicionarProduto;
+    private static Scene adicionarFornecedor;
     
 
     @Override
@@ -23,14 +21,17 @@ public class App extends Application {
         stage = primaryStage;
         primaryStage.setTitle("Controle de estoque");
 
-        Parent fxmlLogin = FXMLLoader.load(getClass().getResource("/views/Login.fxml"));
-        login = new Scene(fxmlLogin);
+        //Parent fxmlLogin = FXMLLoader.load(getClass().getResource("/views/Login.fxml"));
+        //login = new Scene(fxmlLogin);
         
         Parent fxmlTelaInicial = FXMLLoader.load(getClass().getResource("/views/TelaInicial.fxml"));
         telaInicial = new Scene(fxmlTelaInicial);
 
         Parent fxmlAdicionarProduto = FXMLLoader.load(getClass().getResource("/views/AdicionarProduto.fxml"));
         adicionarProduto = new Scene(fxmlAdicionarProduto);
+
+        Parent fxmlAdicionarFornecedor = FXMLLoader.load(getClass().getResource("/views/AdicionarFornecedor.fxml"));
+        adicionarFornecedor = new Scene(fxmlAdicionarFornecedor);
 
         primaryStage.setScene(telaInicial);     
         primaryStage.show();
@@ -46,6 +47,10 @@ public class App extends Application {
 
             case "addProduto":
                 stage.setScene(adicionarProduto);
+                break;
+
+            case "addFornecedor":
+                stage.setScene(adicionarFornecedor);
                 break;
         }
     }

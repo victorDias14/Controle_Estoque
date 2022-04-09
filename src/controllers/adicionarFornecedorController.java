@@ -6,46 +6,31 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class adicionarProdutoController {
-
-    @FXML
-    private Button btnVoltar;
+public class adicionarFornecedorController {
 
     @FXML
     private Button btnConfirmar;
 
     @FXML
-    private TextField txfCodEan;
+    private Button btnVoltar;
 
     @FXML
-    private TextField txfCodInterno;
+    private TextField txfCnpj;
 
     @FXML
-    private TextField txfDescricao;
-
-    @FXML
-    private TextField txfNomeProduto;
-
-    @FXML
-    private TextField txfQuantidade;
-
-    @FXML
-    private TextField txfValorMedio;
-
-    @FXML
-    private TextField txfValorVenda;
+    private TextField txfNomeFornecedor;
 
     @FXML
     void confirmar(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Produto adicionado");
-        alert.setHeaderText("Produto adicionado com sucesso");
+        alert.setTitle("Fornecedor adicionado");
+        alert.setHeaderText("Fornecedor adicionado com sucesso");
         alert.show();
     }
 
     @FXML
     void voltar(ActionEvent event) {
         App.changeScreen("main");
+
     }
-    
 }
