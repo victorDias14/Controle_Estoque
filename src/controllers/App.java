@@ -1,5 +1,11 @@
 package controllers;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import db.DB;
 import enums.Screens;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +24,10 @@ public class App extends Application {
     private static Scene adicionarUsuario;
     private static Scene adicionarSetor;
     private static Scene adicionarLoja;
+
+    Connection conn = null;
+    Statement st = null;
+    ResultSet rs = null;
     
 
     @Override
@@ -45,6 +55,23 @@ public class App extends Application {
 
         Parent fxmlAdicionarLoja = FXMLLoader.load(getClass().getResource("/views/AdicionarLoja.fxml"));
         adicionarLoja = new Scene(fxmlAdicionarLoja);
+
+
+        try {
+            conn = DB.getConnection();
+            st = conn.createStatement();
+            rs = st.executeQuery("select * from produto");
+
+            while (rs.next()) {
+                System.out.println(rs.getInt("codigo_interno") + rs.getInt("codigo_ean") + rs.getString("nome_produto"));
+            }
+        }
+        
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        
 
         primaryStage.setScene(telaInicial);     
         primaryStage.show();
