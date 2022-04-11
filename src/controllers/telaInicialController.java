@@ -27,7 +27,7 @@ public class telaInicialController {
 
     @FXML
     void cadLoja(ActionEvent event) {
-
+        App.changeScreen("addLoja");
     }
 
     @FXML
