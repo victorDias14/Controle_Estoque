@@ -21,9 +21,6 @@ public class AddProdutoController {
     private TextField txfCodInterno;
 
     @FXML
-    private TextField txfDescricao;
-
-    @FXML
     private TextField txfNomeProduto;
 
     @FXML

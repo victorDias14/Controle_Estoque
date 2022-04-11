@@ -13,14 +13,12 @@
       <TextField fx:id="txfCodInterno" layoutX="151.0" layoutY="10.0" />
       <Text layoutX="12.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome produto" />
       <TextField fx:id="txfNomeProduto" layoutX="151.0" layoutY="79.0" />
-      <Text layoutX="13.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descrição" />
-      <Text layoutX="13.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantidade em estoque" />
-      <TextField fx:id="txfQuantidade" editable="false" layoutX="151.0" layoutY="148.0" />
-      <TextField fx:id="txfDescricao" layoutX="151.0" layoutY="114.0" />
-      <Text layoutX="14.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valor médio" />
-      <TextField fx:id="txfValorMedio" editable="false" layoutX="151.0" layoutY="183.0" />
-      <Text layoutX="14.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valor de venda" />
-      <TextField fx:id="txfValorVenda" layoutX="151.0" layoutY="217.0" />
+      <Text layoutX="13.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantidade em estoque" />
+      <TextField fx:id="txfQuantidade" editable="false" layoutX="151.0" layoutY="113.0" />
+      <Text layoutX="14.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valor médio" />
+      <TextField fx:id="txfValorMedio" editable="false" layoutX="151.0" layoutY="148.0" />
+      <Text layoutX="14.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valor de venda" />
+      <TextField fx:id="txfValorVenda" layoutX="151.0" layoutY="182.0" />
       <Text layoutX="14.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Código EAN" />
       <TextField fx:id="txfCodEan" layoutX="152.0" layoutY="44.0" />
    </children>
