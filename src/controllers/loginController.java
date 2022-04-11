@@ -1,12 +1,13 @@
 package controllers;
 
+import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-public class loginController {
+public class LoginController {
 
     @FXML
     private Button btnlogin;
@@ -23,7 +24,7 @@ public class loginController {
         String senha = password.getText();
 
         if (usuario.equals("Victor") && senha.equals("123456")){
-            App.changeScreen("main");
+            App.changeScreen(Screens.TELA_INICIAL);
         }
 
         else {
@@ -31,5 +32,5 @@ public class loginController {
         }
 
     }
-
+    
 }

@@ -5,8 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 
-public class TelaInicialController {
-
+public class telaInicialController {
     @FXML
     private MenuItem btnFornecedor;
 
@@ -46,5 +45,4 @@ public class TelaInicialController {
     void cadUsuario(ActionEvent event) {
         App.changeScreen(Screens.ADD_USUARIO);
     }
-    
 }

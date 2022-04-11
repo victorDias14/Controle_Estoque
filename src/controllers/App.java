@@ -1,5 +1,6 @@
 package controllers;
 
+import enums.Screens;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -50,30 +51,29 @@ public class App extends Application {
         
     }
 
-    //CRIAR ENUM PARA CADA TELA
-    public static void changeScreen(String scr) {
+    public static void changeScreen(Screens scr) {
         switch (scr) {
-            case "main":
+            case TELA_INICIAL:
                 stage.setScene(telaInicial);
                 break;
 
-            case "addProduto":
+            case ADD_PRODUTO:
                 stage.setScene(adicionarProduto);
                 break;
 
-            case "addFornecedor":
+            case ADD_FORNECEDOR:
                 stage.setScene(adicionarFornecedor);
                 break;
 
-            case "addUsuario":
+            case ADD_USUARIO:
                 stage.setScene(adicionarUsuario);
                 break;
 
-            case "addSetor":
+            case ADD_SETOR:
                 stage.setScene(adicionarSetor);
                 break;
 
-            case "addLoja":
+            case ADD_LOJA:
                 stage.setScene(adicionarLoja);
                 break;
 

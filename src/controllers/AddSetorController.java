@@ -1,12 +1,13 @@
 package controllers;
 
+import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class adicionarSetorController {
+public class AddSetorController {
 
     @FXML
     private Button btnConfirmar;
@@ -27,7 +28,7 @@ public class adicionarSetorController {
 
     @FXML
     void voltar(ActionEvent event) {
-        App.changeScreen("main");
+        App.changeScreen(Screens.TELA_INICIAL);
     }
-
+    
 }

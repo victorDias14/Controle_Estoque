@@ -1,13 +1,13 @@
 package controllers;
 
+import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class adicionarUsuarioController {
-
+public class AddFornecedorController {
     @FXML
     private Button btnConfirmar;
 
@@ -15,24 +15,22 @@ public class adicionarUsuarioController {
     private Button btnVoltar;
 
     @FXML
-    private TextField txfCodigoUsuario;
+    private TextField txfCnpj;
 
     @FXML
-    private TextField txfNomeUsuario;
-
-    @FXML
-    private TextField txfSenhaUsuario;
+    private TextField txfNomeFornecedor;
 
     @FXML
     void confirmar(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Usuário adicionado");
-        alert.setHeaderText("Usuário adicionado com sucesso");
+        alert.setTitle("Fornecedor adicionado");
+        alert.setHeaderText("Fornecedor adicionado com sucesso");
         alert.show();
     }
 
     @FXML
     void voltar(ActionEvent event) {
-        App.changeScreen("main");
+        App.changeScreen(Screens.TELA_INICIAL);
+
     }
 }
