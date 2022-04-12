@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import alerts.GenerateAlerts;
 import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
@@ -57,18 +58,12 @@ public class LoginController {
                     }
 
                     else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Erro de login");
-                        alert.setHeaderText("Usuário ou senha inválidos ou inexistentes");
-                        alert.show(); 
+                        GenerateAlerts.loginAlert();
                     }
                 }
 
                 else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erro de login");
-                    alert.setHeaderText("Usuário ou senha inválidos ou inexistentes");
-                    alert.show(); 
+                    GenerateAlerts.loginAlert();
                 }
             }
         }
@@ -76,5 +71,5 @@ public class LoginController {
         catch (SQLException e) {
             e.printStackTrace();
         }
-    }    
+    }
 }

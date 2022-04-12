@@ -1,5 +1,6 @@
 package controllers;
 
+import alerts.GenerateAlerts;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,10 +35,7 @@ public class AddLojaController {
 
     @FXML
     void confirmar(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Loja adicionada");
-        alert.setHeaderText("Loja adicionada com sucesso");
-        alert.show();
+        GenerateAlerts.lojaAlert();
     }
 
     @FXML

@@ -1,5 +1,6 @@
 package controllers;
 
+import alerts.GenerateAlerts;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,10 +26,7 @@ public class AddUsuarioController {
 
     @FXML
     void confirmar(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Usuário adicionado");
-        alert.setHeaderText("Usuário adicionado com sucesso");
-        alert.show();
+        GenerateAlerts.usuarioAlert();
     }
 
     @FXML
