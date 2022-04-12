@@ -1,34 +1,22 @@
 package db;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class DB {
     
     private static Connection conn = null;
-
-    private static Properties loadProperties() {
-        try(var fs = new FileInputStream("/src/config/db.properties")) {
-            var props = new Properties();
-            props.load(fs);
-            return props;
-        }
-
-        catch(IOException e) {
-            throw new DbException(e.getMessage());
-        }
-    }
+    private static String dadosConn = "jdbc:mysql://localhost:3306/controle_estoque";
+    private static String usuario = "root";
+    private static String senha = "123456";
 
     public static Connection getConnection(){
         if (conn == null) {
             try {
-                Properties props = loadProperties();
-                String url = props.getProperty("dburl");
-                conn = DriverManager.getConnection(url, props);
+                //Properties props = loadProperties();
+                //String url = props.getProperty("dburl");
+                conn = DriverManager.getConnection(dadosConn, usuario, senha);
             }
 
             catch(SQLException e) {
