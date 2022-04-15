@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import alerts.AddProdutoAlerts;
 import alerts.GenerateAlerts;
 import db.DB;
 import enums.Screens;
@@ -47,7 +48,7 @@ public class AddProdutoController {
         String valorVenda = txfValorVenda.getText();
 
         if (codEan == "" || codInterno == "" || nomeProduto == "") {
-            GenerateAlerts.produtoErrorAlertEmptyField();
+            AddProdutoAlerts.produtoErrorAlertEmptyField();
         }
 
         else {
@@ -68,13 +69,13 @@ public class AddProdutoController {
                 st.setString(2, codInterno);
                 st.executeUpdate();
 
-                GenerateAlerts.produtoAlert();             
+                AddProdutoAlerts.produtoAlert();             
                     
             }
 
             catch (SQLException e) {
                 e.printStackTrace();
-                GenerateAlerts.produtoErrorAlertGeneric();
+                AddProdutoAlerts.produtoErrorAlertGeneric();
             }
         }
     }
@@ -84,7 +85,7 @@ public class AddProdutoController {
         String codInterno = txfCodInterno.getText();
 
         if (codInterno == "") {
-            GenerateAlerts.consultaProdutoInternoErrorAlert();
+            AddProdutoAlerts.consultaProdutoInternoErrorAlert();
             limpaCampos();
         }
 
@@ -108,7 +109,7 @@ public class AddProdutoController {
                 }
                 
                 else {
-                    GenerateAlerts.consultaProdutoErrorAlert();
+                    AddProdutoAlerts.consultaProdutoErrorAlert();
                     limpaCampos();
                 }
             }
@@ -124,7 +125,7 @@ public class AddProdutoController {
         String codEan = txfCodEan.getText();
 
         if (codEan == "") {
-            GenerateAlerts.consultaProdutoErrorAlert();
+            AddProdutoAlerts.consultaProdutoErrorAlert();
             limpaCampos();
         }
 
@@ -148,7 +149,7 @@ public class AddProdutoController {
                 }
                 
                 else {
-                    GenerateAlerts.consultaProdutoErrorAlert();
+                    AddProdutoAlerts.consultaProdutoErrorAlert();
                     limpaCampos();
                 }
             }
@@ -162,6 +163,8 @@ public class AddProdutoController {
 
     @FXML
     void alterar(ActionEvent event) {
+
+        
         
     }
 
