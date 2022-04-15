@@ -10,7 +10,6 @@ import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -30,6 +29,7 @@ public class LoginController {
     void fazerLogin(ActionEvent event) {
         String usuario = username.getText();
         String senha = password.getText();
+        
         String sqlLogin = "SELECT * FROM usuarios WHERE login = " + usuario + " AND senha = " + senha;
         String usuarioBanco = null;
         String senhaBanco = null;

@@ -5,21 +5,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="335.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddProdutoController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddProdutoController">
    <children>
-      <Button fx:id="btnVoltar" layoutX="202.0" layoutY="537.0" mnemonicParsing="false" onAction="#voltar" text="Voltar" />
-      <Button fx:id="btnConfirmar" layoutX="79.0" layoutY="537.0" mnemonicParsing="false" onAction="#confirmar" text="Confirmar" />
+      <Button fx:id="btnVoltar" layoutX="233.0" layoutY="191.0" mnemonicParsing="false" onAction="#voltar" text="Voltar" />
+      <Button fx:id="btnConfirmar" layoutX="36.0" layoutY="191.0" mnemonicParsing="false" onAction="#confirmar" text="Confirmar" />
       <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Código interno" />
       <TextField fx:id="txfCodInterno" layoutX="151.0" layoutY="10.0" />
       <Text layoutX="12.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome produto" />
       <TextField fx:id="txfNomeProduto" layoutX="151.0" layoutY="79.0" />
       <Text layoutX="13.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantidade em estoque" />
       <TextField fx:id="txfQuantidade" editable="false" layoutX="151.0" layoutY="113.0" />
-      <Text layoutX="14.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valor médio" />
-      <TextField fx:id="txfValorMedio" editable="false" layoutX="151.0" layoutY="148.0" />
-      <Text layoutX="14.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valor de venda" />
-      <TextField fx:id="txfValorVenda" layoutX="151.0" layoutY="182.0" />
+      <Text layoutX="14.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valor de venda" />
+      <TextField fx:id="txfValorVenda" layoutX="151.0" layoutY="147.0" />
       <Text layoutX="14.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Código EAN" />
       <TextField fx:id="txfCodEan" layoutX="152.0" layoutY="44.0" />
+      <Button fx:id="btnConsultar" layoutX="134.0" layoutY="191.0" mnemonicParsing="false" onAction="#consultar" text="Consultar" />
    </children>
 </AnchorPane>

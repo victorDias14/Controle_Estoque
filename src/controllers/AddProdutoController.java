@@ -1,10 +1,15 @@
 package controllers;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import alerts.GenerateAlerts;
+import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -28,18 +33,61 @@ public class AddProdutoController {
     private TextField txfQuantidade;
 
     @FXML
-    private TextField txfValorMedio;
-
-    @FXML
     private TextField txfValorVenda;
+
+    private Connection conn = null;
+    private PreparedStatement st = null;
 
     @FXML
     void confirmar(ActionEvent event) {
-        GenerateAlerts.produtoAlert();
+        String codEan = txfCodEan.getText();
+        String codInterno = txfCodInterno.getText();
+        String nomeProduto = txfNomeProduto.getText();
+        String valorVenda = txfValorVenda.getText();
+
+        if (codEan == "" || codInterno == "" || nomeProduto == "") {
+            GenerateAlerts.produtoErrorAlertEmptyField();
+        }
+
+        else {
+            String sqlInsertProduto = "INSERT INTO produto (codigo_interno, codigo_ean, nome_produto, valor_venda) VALUES (?, ?, ?, ?)";
+            String sqlInsertEan = "INSERT INTO ean (codigo_ean, codigo_interno) VALUES (?, ?)";
+
+            try {
+                conn = DB.getConnection();
+                st = conn.prepareStatement(sqlInsertProduto);
+                st.setString(1, codInterno);
+                st.setString(2, codEan);
+                st.setString(3, nomeProduto); 
+                st.setString(4, valorVenda);
+                st.executeUpdate();
+
+                st = conn.prepareStatement(sqlInsertEan);
+                st.setString(1, codEan);
+                st.setString(2, codInterno);
+                st.executeUpdate();
+
+                GenerateAlerts.produtoAlert();             
+                    
+            }
+
+            catch (SQLException e) {
+                e.printStackTrace();
+                GenerateAlerts.produtoErrorAlertGeneric();
+            }
+        }
+    }
+
+    @FXML
+    void consultar(ActionEvent event) {
+        
     }
 
     @FXML
     void voltar(ActionEvent event) {
         App.changeScreen(Screens.TELA_INICIAL);
+
+        DB.closeStatement(st);
+        DB.closeConnection();
     }
 }

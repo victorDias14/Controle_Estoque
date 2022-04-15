@@ -1,9 +1,5 @@
 package controllers;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 import enums.Screens;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -22,11 +18,6 @@ public class App extends Application {
     private static Scene adicionarUsuario;
     private static Scene adicionarSetor;
     private static Scene adicionarLoja;
-
-    Connection conn = null;
-    Statement st = null;
-    ResultSet rs = null;
-    
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -54,7 +45,7 @@ public class App extends Application {
         Parent fxmlAdicionarLoja = FXMLLoader.load(getClass().getResource("/views/AdicionarLoja.fxml"));
         adicionarLoja = new Scene(fxmlAdicionarLoja);        
 
-        primaryStage.setScene(login);     
+        primaryStage.setScene(telaInicial);     
         primaryStage.show();
         
     }

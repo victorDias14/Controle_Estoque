@@ -35,6 +35,20 @@ public class GenerateAlerts {
         alert.show();
     }
 
+    public static void produtoErrorAlertEmptyField() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Apenas o campo 'Valor de venda' pode ficar vazio.");
+        alert.show();
+    }
+
+    public static void produtoErrorAlertGeneric() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Erro ao adicionar produto");
+        alert.show();
+    }
+
     public static void setorAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Setor adicionado");
