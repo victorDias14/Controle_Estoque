@@ -49,6 +49,20 @@ public class GenerateAlerts {
         alert.show();
     }
 
+    public static void consultaProdutoInternoErrorAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Nenhum código informado.");
+        alert.show();
+    }
+
+    public static void consultaProdutoInternoInexistenteAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Produto não cadastrado.");
+        alert.show();
+    }
+
     public static void setorAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Setor adicionado");
