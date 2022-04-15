@@ -108,7 +108,7 @@ public class AddProdutoController {
                 }
                 
                 else {
-                    GenerateAlerts.consultaProdutoInternoInexistenteAlert();
+                    GenerateAlerts.consultaProdutoErrorAlert();
                     limpaCampos();
                 }
             }
@@ -121,6 +121,42 @@ public class AddProdutoController {
 
     @FXML
     void consultarEan(ActionEvent event) {
+        String codEan = txfCodEan.getText();
+
+        if (codEan == "") {
+            GenerateAlerts.consultaProdutoErrorAlert();
+            limpaCampos();
+        }
+
+        else {
+
+            String sqlConsultaInterno = "SELECT * FROM produto WHERE codigo_ean = ?";
+
+            try {
+                conn = DB.getConnection();
+                st = conn.prepareStatement(sqlConsultaInterno);
+                st.setString(1, codEan);
+                rs = st.executeQuery();
+
+                if (rs.isBeforeFirst()) {
+                    while (rs.next()) {
+                        txfCodInterno.setText(rs.getString("codigo_interno"));
+                        txfNomeProduto.setText(rs.getString("nome_produto"));
+                        txfQuantidade.setText(rs.getString("quantidade_estoque"));
+                        txfValorVenda.setText(rs.getString("valor_venda"));
+                    }                    
+                }
+                
+                else {
+                    GenerateAlerts.consultaProdutoErrorAlert();
+                    limpaCampos();
+                }
+            }
+
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -140,6 +176,7 @@ public class AddProdutoController {
     }
 
     void limpaCampos(){
+        txfCodInterno.setText("");
         txfCodEan.setText("");
         txfNomeProduto.setText("");
         txfQuantidade.setText("");

@@ -56,7 +56,7 @@ public class GenerateAlerts {
         alert.show();
     }
 
-    public static void consultaProdutoInternoInexistenteAlert() {
+    public static void consultaProdutoErrorAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro");
         alert.setHeaderText("Produto não cadastrado.");
