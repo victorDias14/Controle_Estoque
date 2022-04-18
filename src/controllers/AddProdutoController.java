@@ -261,11 +261,11 @@ public class AddProdutoController {
     }
 
     void limpaCampos(){
-        txfCodInterno.setText("");
-        txfCodEan.setText("");
-        txfNomeProduto.setText("");
-        txfQuantidade.setText("");
-        txfValorVenda.setText("");
+        txfCodInterno.clear();
+        txfCodEan.clear();
+        txfNomeProduto.clear();
+        txfQuantidade.clear();
+        txfValorVenda.clear();
     }
 
     void preencheCamposConsulta(ResultSet rs) {
