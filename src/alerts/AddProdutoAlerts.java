@@ -40,5 +40,19 @@ public class AddProdutoAlerts {
         alert.setHeaderText("Produto não cadastrado.");
         alert.show();
     }
+
+    public static void apagaProdutoErrorAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Consulte um produto primeiro");
+        alert.show();
+    }
+
+    public static void alteraProdutoAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Produto alterado");
+        alert.setHeaderText("Produto alterado com sucesso.");
+        alert.show();
+    }
     
 }
