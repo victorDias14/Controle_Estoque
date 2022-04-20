@@ -1,11 +1,11 @@
 package controllers;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-import alerts.GenerateAlerts;
+import alerts.LoginAlerts;
 import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
@@ -25,51 +25,58 @@ public class LoginController {
     @FXML
     private TextField username;
 
+    private Connection conn;
+    private PreparedStatement st;
+    private ResultSet rs;
+
     @FXML
     void fazerLogin(ActionEvent event) {
         String usuario = username.getText();
         String senha = password.getText();
-        
-        String sqlLogin = "SELECT * FROM usuarios WHERE login = " + usuario + " AND senha = " + senha;
-        String usuarioBanco = null;
-        String senhaBanco = null;
 
-        Connection conn = null;
-        Statement st = null;
-        ResultSet rs = null;
+        if (usuario == "" && senha == "") {
+            LoginAlerts.loginInformationAlert();
+        }
 
-        try {
-            conn = DB.getConnection();
-            st = conn.createStatement();
-            rs = st.executeQuery(sqlLogin);            
-            
-            if (rs != null) {
-                while (rs.next()) {
-                    usuarioBanco = rs.getString("login");
-                    senhaBanco = rs.getString("senha");
-                }                
+        else {
+            var criptografia = new AddUsuarioController();
+            String senhaCriptoDigitada = criptografia.criptografia(senha);
+            String senhaCriptoBanco = null;
+            String sqlLogin = "SELECT senha FROM usuarios WHERE login = ?";
 
-                if (usuarioBanco != null && usuario.equals(usuarioBanco)) {
-                    if (senha.equals(senhaBanco)) {
+            try {
+                conn = DB.getConnection();
+                st = conn.prepareStatement(sqlLogin);
+                st.setString(1, usuario);
+                rs = st.executeQuery();
+
+                if (rs.isBeforeFirst()) {
+                    while (rs.next()) {
+                        senhaCriptoBanco = rs.getString("senha");
+                    }
+
+                    if (senhaCriptoDigitada.equals(senhaCriptoBanco)) {
                         App.changeScreen(Screens.TELA_INICIAL);
+
                         DB.closeResultset(rs);
                         DB.closeStatement(st);
                         DB.closeConnection();
                     }
 
                     else {
-                        GenerateAlerts.loginAlert();
+                        LoginAlerts.loginErrorAlert();
                     }
                 }
 
                 else {
-                    GenerateAlerts.loginAlert();
-                }
+                    LoginAlerts.loginErrorAlert();
+                }                                
             }
-        }
-        
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }        
     }
 }

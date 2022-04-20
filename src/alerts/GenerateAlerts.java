@@ -7,12 +7,7 @@ public class GenerateAlerts {
     private static String messageOne = "adicionada com sucesso";
     private static String messageTwo = "adicionado com sucesso";
 
-    public static void loginAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erro de login");
-        alert.setHeaderText("Usuário ou senha inválidos ou inexistentes");
-        alert.show();        
-    }
+    
 
 
 
@@ -32,11 +27,6 @@ public class GenerateAlerts {
         alert.show();
     }
 
-    public static void usuarioAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Usuário adicionado");
-        alert.setHeaderText("Usuário " + messageTwo);
-        alert.show();
-    }
+    
     
 }
