@@ -239,7 +239,7 @@ public class AddProdutoController {
                 st.setInt(1, codInternoConvertido);
                 st.executeUpdate();
 
-                AddProdutoAlerts.produtoAlert();             
+                AddProdutoAlerts.apagaProdutoAlert();             
                     
             }
 

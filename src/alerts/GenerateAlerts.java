@@ -14,12 +14,7 @@ public class GenerateAlerts {
         alert.show();        
     }
 
-    public static void fornecedorAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Fornecedor adicionado");
-        alert.setHeaderText("Fornecedor " + messageTwo);
-        alert.show();
-    }
+
 
     public static void lojaAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

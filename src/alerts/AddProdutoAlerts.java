@@ -4,12 +4,10 @@ import javafx.scene.control.Alert;
 
 public class AddProdutoAlerts {
 
-    private static String message = "adicionado com sucesso";
-
     public static void produtoAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Produto adicionado");
-        alert.setHeaderText("Produto " + message);
+        alert.setHeaderText("Produto adicionado com sucesso");
         alert.show();
     }
 
@@ -38,6 +36,13 @@ public class AddProdutoAlerts {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro");
         alert.setHeaderText("Produto não cadastrado.");
+        alert.show();
+    }
+
+    public static void apagaProdutoAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Sucesso");
+        alert.setHeaderText("Produto apagado com sucesso.");
         alert.show();
     }
 

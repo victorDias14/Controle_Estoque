@@ -15,3 +15,9 @@ create table ean (
 create table usuarios (
   login varchar(20) not null,
   senha varchar(100) not null);
+
+create table fornecedores (
+	nome varchar(60) not null,
+	cnpj bigint not null,
+	primary key(cnpj)
+);
