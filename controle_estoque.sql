@@ -21,3 +21,8 @@ create table fornecedores (
 	cnpj bigint not null,
 	primary key(cnpj)
 );
+
+create table setores (
+	nome varchar(60) not null,
+	primary key(nome)
+);
