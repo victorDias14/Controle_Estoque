@@ -59,5 +59,26 @@ public class AddProdutoAlerts {
         alert.setHeaderText("Produto alterado com sucesso.");
         alert.show();
     }
+
+    public static void codInternoExisteAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Produto já existe");
+        alert.setHeaderText("Código interno já cadastrado.");
+        alert.show();
+    }
+
+    public static void codEanExisteAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Produto já existe");
+        alert.setHeaderText("Código EAN já cadastrado.");
+        alert.show();
+    }
+
+    public static void nomeProdutoExisteAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Produto já existe");
+        alert.setHeaderText("Nome de produto já cadastrado.");
+        alert.show();
+    }
     
 }

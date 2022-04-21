@@ -63,25 +63,54 @@ public class AddProdutoController {
         }
 
         else {
-            String sqlInsertProduto = "INSERT INTO produto (codigo_interno, codigo_ean, nome_produto, valor_venda) VALUES (?, ?, ?, ?)";
-            String sqlInsertEan = "INSERT INTO ean (codigo_ean, codigo_interno) VALUES (?, ?)";
+            String sqlConsultaExiste = "SELECT codigo_interno, codigo_ean, nome_produto FROM produto";
 
             try {
                 conn = DB.getConnection();
-                st = conn.prepareStatement(sqlInsertProduto);
-                st.setString(1, codInterno);
-                st.setString(2, codEan);
-                st.setString(3, nomeProduto); 
-                st.setString(4, valorVenda);
-                st.executeUpdate();
+                st = conn.prepareStatement(sqlConsultaExiste);
+                rs = st.executeQuery();
 
-                st = conn.prepareStatement(sqlInsertEan);
-                st.setString(1, codEan);
-                st.setString(2, codInterno);
-                st.executeUpdate();
+                if(rs.isBeforeFirst()) {
+                    while(rs.next()) {
+                        if(rs.getString("codigo_interno").equals(codInterno)) {
+                            AddProdutoAlerts.codInternoExisteAlert();
+                        }
 
-                AddProdutoAlerts.produtoAlert();             
-                    
+                        else if(rs.getString("codigo_ean").equals(codEan)) {
+                            AddProdutoAlerts.codEanExisteAlert();
+                        }
+
+                        else if(rs.getString("nome_produto").equals(nomeProduto)) {
+                            AddProdutoAlerts.nomeProdutoExisteAlert();
+                        }
+                    }
+                }
+
+                else {
+                    String sqlInsertProduto = "INSERT INTO produto (codigo_interno, codigo_ean, nome_produto, valor_venda) VALUES (?, ?, ?, ?)";
+                    String sqlInsertEan = "INSERT INTO ean (codigo_ean, codigo_interno) VALUES (?, ?)";
+
+                    try {
+                        
+                        st = conn.prepareStatement(sqlInsertProduto);
+                        st.setString(1, codInterno);
+                        st.setString(2, codEan);
+                        st.setString(3, nomeProduto); 
+                        st.setString(4, valorVenda);
+                        st.executeUpdate();
+
+                        st = conn.prepareStatement(sqlInsertEan);
+                        st.setString(1, codEan);
+                        st.setString(2, codInterno);
+                        st.executeUpdate();
+
+                        AddProdutoAlerts.produtoAlert();
+                    }
+
+                    catch(SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             catch (SQLException e) {

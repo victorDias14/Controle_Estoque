@@ -114,6 +114,7 @@ public class AddSetorController {
     void voltar(ActionEvent event) {
         App.changeScreen(Screens.TELA_INICIAL);
 
+        DB.closeResultset(rs);
         DB.closeStatement(st);
         DB.closeConnection();
     }
