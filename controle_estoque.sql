@@ -26,3 +26,13 @@ create table setores (
 	nome varchar(60) not null,
 	primary key(nome)
 );
+
+create table loja (
+	codigo integer not null,
+	nome varchar(60) not null,
+	cnpj bigint not null,
+	rua varchar(60) not null,
+	numero integer not null,
+	cep char(8) not null,
+    primary key(codigo)
+);

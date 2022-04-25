@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddLojaController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="237.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddLojaController">
    <children>
       <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Código" />
       <TextField fx:id="txfCodigoLoja" layoutX="66.0" layoutY="10.0" />
@@ -20,7 +19,9 @@
       <TextField fx:id="txfNumeroLoja" layoutX="503.0" layoutY="115.0" prefHeight="25.0" prefWidth="117.0" />
       <Text layoutX="15.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CEP" />
       <TextField fx:id="txfCepLoja" layoutX="67.0" layoutY="150.0" />
-      <Button fx:id="btnConfirmar" layoutX="190.0" layoutY="322.0" mnemonicParsing="false" onAction="#confirmar" text="Confirmar" />
-      <Button fx:id="btnVoltar" layoutX="374.0" layoutY="322.0" mnemonicParsing="false" onAction="#voltar" text="Voltar" />
+      <Button fx:id="btnAdicionar" layoutX="226.0" layoutY="195.0" mnemonicParsing="false" onAction="#adicionar" text="Adicionar" />
+      <Button fx:id="btnVoltar" layoutX="366.0" layoutY="195.0" mnemonicParsing="false" onAction="#voltar" text="Voltar" />
+      <Button fx:id="btnConsultar" layoutX="225.0" layoutY="10.0" mnemonicParsing="false" onAction="#consultar" text="Consultar" />
+      <Button fx:id="btnApagar" layoutX="301.0" layoutY="195.0" mnemonicParsing="false" onAction="#apagar" text="Apagar" />
    </children>
 </AnchorPane>
