@@ -114,6 +114,29 @@ public class AddLojaController {
 
     @FXML
     void apagar(ActionEvent event) {
+        codigoLoja = txfCodigoLoja.getText();
+
+        if(codigoLoja == "") {
+            AddLojaAlerts.campoVazioLojaAlert();
+        }
+
+        else {
+
+            String sqlDeleteLoja = "DELETE FROM loja WHERE codigo = ?";
+
+            try {
+                conn = DB.getConnection();
+                st = conn.prepareStatement(sqlDeleteLoja);
+                st.setString(1, codigoLoja);
+                st.executeUpdate();
+
+                AddLojaAlerts.LojaApagadaAlert();
+            } 
+            
+            catch (Exception e) {
+                
+            }
+        }
 
     }
         
