@@ -18,7 +18,7 @@ public class LoginDao {
         String senha = objUsuarioDto.getSenha();
         String senhaCriptoBanco = null;
 
-        String sqlValidaUsuario = "SELECT senha FROM usuarios WHERE login = ?";
+        String sqlValidaUsuario = DB.loadSql("validaUsuario");
 
         try {
             conn = DB.getConnection();

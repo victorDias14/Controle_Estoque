@@ -21,7 +21,7 @@ public class ProdutoDao {
         String nomeProduto = objProdutoDto.getNomeProduto();
         String valorVenda = objProdutoDto.getValorVenda();
 
-        String sqlConsultaExiste = "SELECT codigo_interno, codigo_ean, nome_produto FROM produto WHERE codigo_interno = ? OR codigo_ean = ? OR nome_produto = ?";
+        String sqlConsultaExiste = DB.loadSql("selectProduto");
 
         try {
             conn = DB.getConnection();
@@ -48,8 +48,8 @@ public class ProdutoDao {
             }
 
             else {
-                String sqlInsertProduto = "INSERT INTO produto (codigo_interno, codigo_ean, nome_produto, valor_venda) VALUES (?, ?, ?, ?)";
-                String sqlInsertEan = "INSERT INTO ean (codigo_ean, codigo_interno) VALUES (?, ?)";
+                String sqlInsertProduto = DB.loadSql("insertProduto");
+                String sqlInsertEan = DB.loadSql("insertEan");
 
                 try {
                         

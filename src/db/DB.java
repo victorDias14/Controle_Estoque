@@ -41,6 +41,18 @@ public class DB {
         }
     }
 
+    public static String loadSql(String sql){
+        try(FileInputStream fs = new FileInputStream("./src/db/sql.properties")){
+            Properties props = new Properties();
+            props.load(fs);
+            return props.getProperty(sql);
+        }
+
+        catch(IOException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+
     public static void closeConnection() {
         if (conn != null) {
             try {
