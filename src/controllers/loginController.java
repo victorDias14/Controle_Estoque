@@ -1,6 +1,7 @@
 package controllers;
 
 import alerts.LoginAlerts;
+import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,6 +25,7 @@ public class LoginController {
     @FXML
     void fazerLogin(ActionEvent event) {
 
+        int retorno = 0;
         String usuario = username.getText();
         String senha = password.getText();
 
@@ -40,7 +42,16 @@ public class LoginController {
             objUsuarioBo.criptografaSenha(objUsuarioDto);
 
             LoginDao objUsuarioDao = new LoginDao();
-            objUsuarioDao.validaUsuario(objUsuarioDto);
+            retorno = objUsuarioDao.validaUsuario(objUsuarioDto);
         }
+
+        if(retorno == 0) {
+            LoginAlerts.loginErrorAlert();
+        }
+
+        else {
+            App.changeScreen(Screens.TELA_INICIAL);
+        }
+
     }
 }

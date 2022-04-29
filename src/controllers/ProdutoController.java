@@ -12,8 +12,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import model.dao.ProdutoDao;
+import model.dto.ProdutoDto;
 
-public class AddProdutoController {
+public class ProdutoController {
     @FXML
     private Button btnVoltar;
 
@@ -63,60 +65,14 @@ public class AddProdutoController {
         }
 
         else {
-            String sqlConsultaExiste = "SELECT codigo_interno, codigo_ean, nome_produto FROM produto";
+            ProdutoDto objProdutoDto = new ProdutoDto();
+            objProdutoDto.setCodEan(codEan);
+            objProdutoDto.setCodInterno(codInterno);
+            objProdutoDto.setNomeProduto(nomeProduto);
+            objProdutoDto.setValorVenda(valorVenda);
 
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlConsultaExiste);
-                rs = st.executeQuery();
-
-                if(rs.isBeforeFirst()) {
-                    while(rs.next()) {
-                        if(rs.getString("codigo_interno").equals(codInterno)) {
-                            AddProdutoAlerts.codInternoExisteAlert();
-                        }
-
-                        else if(rs.getString("codigo_ean").equals(codEan)) {
-                            AddProdutoAlerts.codEanExisteAlert();
-                        }
-
-                        else if(rs.getString("nome_produto").equals(nomeProduto)) {
-                            AddProdutoAlerts.nomeProdutoExisteAlert();
-                        }
-                    }
-                }
-
-                else {
-                    String sqlInsertProduto = "INSERT INTO produto (codigo_interno, codigo_ean, nome_produto, valor_venda) VALUES (?, ?, ?, ?)";
-                    String sqlInsertEan = "INSERT INTO ean (codigo_ean, codigo_interno) VALUES (?, ?)";
-
-                    try {
-                        
-                        st = conn.prepareStatement(sqlInsertProduto);
-                        st.setString(1, codInterno);
-                        st.setString(2, codEan);
-                        st.setString(3, nomeProduto); 
-                        st.setString(4, valorVenda);
-                        st.executeUpdate();
-
-                        st = conn.prepareStatement(sqlInsertEan);
-                        st.setString(1, codEan);
-                        st.setString(2, codInterno);
-                        st.executeUpdate();
-
-                        AddProdutoAlerts.produtoAlert();
-                    }
-
-                    catch(SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            catch (SQLException e) {
-                e.printStackTrace();
-                AddProdutoAlerts.produtoErrorAlertGeneric();
-            }
+            ProdutoDao objProdutoDao = new ProdutoDao();
+            objProdutoDao.adicionaProduto(objProdutoDto);
         }
     }
 

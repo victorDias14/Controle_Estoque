@@ -6,7 +6,7 @@ import model.dto.LoginDto;
 
 public class LoginBo {
 
-    public int criptografaSenha(LoginDto objUsuarioDto) {
+    public void criptografaSenha(LoginDto objUsuarioDto) {
         String senha = objUsuarioDto.getSenha();
 
         try {
@@ -24,10 +24,10 @@ public class LoginBo {
 
         catch(Exception e) {
             e.printStackTrace();
-            return 0;
+
         }
 
-        return 1;
+
     }
     
 }

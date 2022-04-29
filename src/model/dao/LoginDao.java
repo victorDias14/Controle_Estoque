@@ -5,10 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import alerts.LoginAlerts;
-import controllers.App;
 import db.DB;
-import enums.Screens;
 import model.dto.LoginDto;
 
 public class LoginDao {
@@ -16,7 +13,7 @@ public class LoginDao {
     private PreparedStatement st;
     private ResultSet rs;
 
-    public void validaUsuario(LoginDto objUsuarioDto) {
+    public int validaUsuario(LoginDto objUsuarioDto) {
         String usuario = objUsuarioDto.getUsuario();
         String senha = objUsuarioDto.getSenha();
         String senhaCriptoBanco = null;
@@ -35,25 +32,27 @@ public class LoginDao {
                 }
 
                 if (senha.equals(senhaCriptoBanco)) {
-                    App.changeScreen(Screens.TELA_INICIAL);
 
                     DB.closeResultset(rs);
                     DB.closeStatement(st);
                     DB.closeConnection();
+
+                    return 1;
                 }
 
                 else {
-                    LoginAlerts.loginErrorAlert();
+                    return 0;
                 }
             }
 
             else {
-                LoginAlerts.loginErrorAlert();
+                return 0;
             }                                
         }
 
         catch (SQLException e) {
             e.printStackTrace();
+            return 0;
         }
 
     }
