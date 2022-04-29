@@ -12,7 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import model.dao.ProdutoDao;
+import model.bo.ProdutoBo;
 import model.dto.ProdutoDto;
 
 public class ProdutoController {
@@ -60,20 +60,14 @@ public class ProdutoController {
         nomeProduto = txfNomeProduto.getText();
         valorVenda = txfValorVenda.getText();
 
-        if (codEan == "" || codInterno == "" || nomeProduto == "") {
-            AddProdutoAlerts.produtoErrorAlertEmptyField();
-        }
+        ProdutoDto objProdutoDto = new ProdutoDto();
+        objProdutoDto.setCodEan(codEan);
+        objProdutoDto.setCodInterno(codInterno);
+        objProdutoDto.setNomeProduto(nomeProduto);
+        objProdutoDto.setValorVenda(valorVenda);
 
-        else {
-            ProdutoDto objProdutoDto = new ProdutoDto();
-            objProdutoDto.setCodEan(codEan);
-            objProdutoDto.setCodInterno(codInterno);
-            objProdutoDto.setNomeProduto(nomeProduto);
-            objProdutoDto.setValorVenda(valorVenda);
-
-            ProdutoDao objProdutoDao = new ProdutoDao();
-            objProdutoDao.adicionaProduto(objProdutoDto);
-        }
+        ProdutoBo objProdutoBo = new ProdutoBo();
+        objProdutoBo.verificaCamposVazios(objProdutoDto);
     }
 
     @FXML

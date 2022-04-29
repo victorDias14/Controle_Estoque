@@ -17,6 +17,7 @@ public class ProdutoDao {
     private ResultSet rs;
 
     public void adicionaProduto(ProdutoDto objProdutoDto) {
+        
         String codInterno = objProdutoDto.getCodInterno();
         String codEan = objProdutoDto.getCodEan();
         String nomeProduto = objProdutoDto.getNomeProduto();
