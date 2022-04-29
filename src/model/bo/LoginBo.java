@@ -2,12 +2,17 @@ package model.bo;
 
 import java.security.MessageDigest;
 
+import alerts.LoginAlerts;
+import model.dao.LoginDao;
 import model.dto.LoginDto;
 
 public class LoginBo {
 
+    private String usuario;
+    private String senha;
+
     public void criptografaSenha(LoginDto objUsuarioDto) {
-        String senha = objUsuarioDto.getSenha();
+        senha = objUsuarioDto.getSenha();
 
         try {
             MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
@@ -20,14 +25,27 @@ public class LoginBo {
             }
 
             objUsuarioDto.setSenha(hexString.toString());
+            LoginDao loginDao = new LoginDao();
+            loginDao.validaUsuario(objUsuarioDto);
         }
 
         catch(Exception e) {
             e.printStackTrace();
 
         }
+    }
 
+    public void verificaCamposVazios(LoginDto objLoginDto){
+        usuario = objLoginDto.getUsuario();
+        senha = objLoginDto.getSenha();
 
+        if(usuario == "" || senha == "") {
+            LoginAlerts.loginInformationAlert();
+        }
+
+        else {
+            criptografaSenha(objLoginDto);
+        }
     }
     
 }

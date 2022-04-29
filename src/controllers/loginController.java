@@ -1,14 +1,11 @@
 package controllers;
 
-import alerts.LoginAlerts;
-import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.bo.LoginBo;
-import model.dao.LoginDao;
 import model.dto.LoginDto;
 
 public class LoginController {
@@ -25,33 +22,15 @@ public class LoginController {
     @FXML
     void fazerLogin(ActionEvent event) {
 
-        int retorno = 0;
         String usuario = username.getText();
         String senha = password.getText();
 
-        if (usuario == "" && senha == "") {
-            LoginAlerts.loginInformationAlert();
-        }
+        LoginDto objUsuarioDto = new LoginDto();
+        objUsuarioDto.setUsuario(usuario);
+        objUsuarioDto.setSenha(senha);
 
-        else {
-            LoginDto objUsuarioDto = new LoginDto();
-            objUsuarioDto.setUsuario(usuario);
-            objUsuarioDto.setSenha(senha);
-
-            LoginBo objUsuarioBo = new LoginBo();
-            objUsuarioBo.criptografaSenha(objUsuarioDto);
-
-            LoginDao objUsuarioDao = new LoginDao();
-            retorno = objUsuarioDao.validaUsuario(objUsuarioDto);
-        }
-
-        if(retorno == 0) {
-            LoginAlerts.loginErrorAlert();
-        }
-
-        else {
-            App.changeScreen(Screens.TELA_INICIAL);
-        }
+        LoginBo objUsuarioBo = new LoginBo();
+        objUsuarioBo.verificaCamposVazios(objUsuarioDto);
 
     }
 }
