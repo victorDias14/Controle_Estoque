@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import alerts.AddProdutoAlerts;
 import db.DB;
+import model.bo.ProdutoBo;
 import model.dto.ProdutoDto;
 
 public class ProdutoDao {
@@ -33,17 +34,12 @@ public class ProdutoDao {
 
             if(rs.isBeforeFirst()) {
                 while(rs.next()) {
-                    if(rs.getString("codigo_interno").equals(codInterno)) {
-                        AddProdutoAlerts.codInternoExisteAlert();
-                    }
+                    objProdutoDto.setCodInternoBanco(rs.getString("codigo_interno"));
+                    objProdutoDto.setCodEanBanco(rs.getString("codigo_ean"));
+                    objProdutoDto.setNomeProdutoBanco(rs.getString("nome_produto"));
 
-                    else if(rs.getString("codigo_ean").equals(codEan)) {
-                        AddProdutoAlerts.codEanExisteAlert();
-                    }
-
-                    else if(rs.getString("nome_produto").equals(nomeProduto)) {
-                        AddProdutoAlerts.nomeProdutoExisteAlert();
-                    }
+                    ProdutoBo objProdutoBo = new ProdutoBo();
+                    objProdutoBo.verificaProdutoExiste(objProdutoDto);
                 }
             }
 

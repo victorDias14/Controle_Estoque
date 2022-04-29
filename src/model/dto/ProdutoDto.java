@@ -6,11 +6,11 @@ public class ProdutoDto {
     private String codInterno;
     private String nomeProduto;
     private String valorVenda;
-
-    private String codInternoOld;
-    private String codEanOld;
-    private String nomeProdutoOld;
-    private String valorVendaOld;
+    
+    private String codEanBanco;
+    private String codInternoBanco;
+    private String nomeProdutoBanco;
+    private String valorVendaBanco;
     
     public String getCodEan() {
         return codEan;
@@ -36,29 +36,29 @@ public class ProdutoDto {
     public void setValorVenda(String valorVenda) {
         this.valorVenda = valorVenda;
     }
-    public String getCodInternoOld() {
-        return codInternoOld;
+    public String getCodEanBanco() {
+        return codEanBanco;
     }
-    public void setCodInternoOld(String codInternoOld) {
-        this.codInternoOld = codInternoOld;
+    public void setCodEanBanco(String codEanBanco) {
+        this.codEanBanco = codEanBanco;
     }
-    public String getCodEanOld() {
-        return codEanOld;
+    public String getCodInternoBanco() {
+        return codInternoBanco;
     }
-    public void setCodEanOld(String codEanOld) {
-        this.codEanOld = codEanOld;
+    public void setCodInternoBanco(String codInternoBanco) {
+        this.codInternoBanco = codInternoBanco;
     }
-    public String getNomeProdutoOld() {
-        return nomeProdutoOld;
+    public String getNomeProdutoBanco() {
+        return nomeProdutoBanco;
     }
-    public void setNomeProdutoOld(String nomeProdutoOld) {
-        this.nomeProdutoOld = nomeProdutoOld;
+    public void setNomeProdutoBanco(String nomeProdutoBanco) {
+        this.nomeProdutoBanco = nomeProdutoBanco;
     }
-    public String getValorVendaOld() {
-        return valorVendaOld;
+    public String getValorVendaBanco() {
+        return valorVendaBanco;
     }
-    public void setValorVendaOld(String valorVendaOld) {
-        this.valorVendaOld = valorVendaOld;
+    public void setValorVendaBanco(String valorVendaBanco) {
+        this.valorVendaBanco = valorVendaBanco;
     }
 
     
