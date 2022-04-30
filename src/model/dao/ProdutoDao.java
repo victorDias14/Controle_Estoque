@@ -16,12 +16,17 @@ public class ProdutoDao {
     private PreparedStatement st;
     private ResultSet rs;
 
+    private String codInterno;
+    private String codEan;
+    private String nomeProduto;
+    private String valorVenda;
+
     public void adicionaProduto(ProdutoDto objProdutoDto) {
         
-        String codInterno = objProdutoDto.getCodInterno();
-        String codEan = objProdutoDto.getCodEan();
-        String nomeProduto = objProdutoDto.getNomeProduto();
-        String valorVenda = objProdutoDto.getValorVenda();
+        codInterno = objProdutoDto.getCodInterno();
+        codEan = objProdutoDto.getCodEan();
+        nomeProduto = objProdutoDto.getNomeProduto();
+        valorVenda = objProdutoDto.getValorVenda();
 
         String sqlConsultaExiste = DB.loadSql("selectProduto");
 
@@ -74,6 +79,35 @@ public class ProdutoDao {
         catch (SQLException e) {
             e.printStackTrace();
             AddProdutoAlerts.produtoErrorAlertGeneric();
+        }
+    }
+
+    public void consulta(ProdutoDto objProdutoDto, String tipoConsulta, String codConsulta){
+        String sqlConsulta = DB.loadSql(tipoConsulta);
+
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(sqlConsulta);
+            st.setString(1, codConsulta);
+            rs = st.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                while (rs.next()) {
+                    objProdutoDto.setCodInterno(rs.getString("codigo_interno"));
+                    objProdutoDto.setCodEan(rs.getString("codigo_ean"));
+                    objProdutoDto.setNomeProduto(rs.getString("nome_produto"));
+                    objProdutoDto.setValorVenda(rs.getString("valor_venda"));
+                }                
+            }
+            
+            else {
+                AddProdutoAlerts.consultaProdutoErrorAlert();
+                ProdutoBo.limpaCampos();
+            }
+        }
+
+        catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

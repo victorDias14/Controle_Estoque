@@ -1,6 +1,7 @@
 package model.bo;
 
 import alerts.AddProdutoAlerts;
+import controllers.ProdutoController;
 import model.dao.ProdutoDao;
 import model.dto.ProdutoDto;
 
@@ -48,5 +49,39 @@ public class ProdutoBo {
             ProdutoDao objProdutoDao = new ProdutoDao();
             objProdutoDao.adicionaProduto(objProdutoDto);
         }
+    }
+
+    public void consulta(ProdutoDto objProdutoDto, String tipoConsulta) {
+        
+        if (tipoConsulta == "interno") {
+            codInterno = objProdutoDto.getCodInterno();
+
+            if (codInterno.isEmpty()) {
+                AddProdutoAlerts.consultaProdutoInternoErrorAlert();
+            }
+
+            else {
+                ProdutoDao objProdutoDao = new ProdutoDao();
+                objProdutoDao.consulta(objProdutoDto, "consultaInterno", codInterno);
+            }
+        }
+
+        else if (tipoConsulta == "ean"){
+            codEan = objProdutoDto.getCodEan();
+
+            if (codEan.isEmpty()) {
+                AddProdutoAlerts.consultaProdutoErrorAlert();
+            }
+
+            else {
+                ProdutoDao objProdutoDao = new ProdutoDao();
+                objProdutoDao.consulta(objProdutoDto, "consultaEan", codEan);
+            }
+        }
+    }
+
+    public static void limpaCampos() {
+        ProdutoController prodControl = new ProdutoController();
+        prodControl.limpaCampos();
     }
 }

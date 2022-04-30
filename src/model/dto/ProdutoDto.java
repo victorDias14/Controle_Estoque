@@ -59,8 +59,5 @@ public class ProdutoDto {
     }
     public void setValorVendaBanco(String valorVendaBanco) {
         this.valorVendaBanco = valorVendaBanco;
-    }
-
-    
-    
+    }    
 }

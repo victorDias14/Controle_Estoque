@@ -74,39 +74,16 @@ public class ProdutoController {
     void consultarInterno(ActionEvent event) {
         codInterno = txfCodInterno.getText();
 
-        if (codInterno == "") {
-            AddProdutoAlerts.consultaProdutoInternoErrorAlert();
-            limpaCampos();
-        }
+        ProdutoDto objProdutoDto = new ProdutoDto();
+        objProdutoDto.setCodInterno(codInterno);
 
-        else {
+        ProdutoBo objProdutoBo = new ProdutoBo();
+        objProdutoBo.consulta(objProdutoDto, "interno");
 
-            String sqlConsultaInterno = "SELECT * FROM produto WHERE codigo_interno = ?";
-
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlConsultaInterno);
-                st.setString(1, codInterno);
-                rs = st.executeQuery();
-
-                if (rs.isBeforeFirst()) {
-                    while (rs.next()) {
-                        txfCodEan.setText(rs.getString("codigo_ean"));
-                        preencheCamposConsulta(rs);
-                    }
-                    
-                }
-                
-                else {
-                    AddProdutoAlerts.consultaProdutoErrorAlert();
-                    limpaCampos();
-                }
-            }
-
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }        
+        txfCodInterno.setText(objProdutoDto.getCodInterno());
+        txfCodEan.setText(objProdutoDto.getCodEan());
+        txfNomeProduto.setText(objProdutoDto.getNomeProduto());
+        txfValorVenda.setText(objProdutoDto.getValorVenda());
     }
 
     @FXML
@@ -239,7 +216,7 @@ public class ProdutoController {
         
     }
 
-    void limpaCampos(){
+    public void limpaCampos(){
         txfCodInterno.clear();
         txfCodEan.clear();
         txfNomeProduto.clear();
