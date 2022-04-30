@@ -57,7 +57,7 @@ public class ProdutoBo {
             codInterno = objProdutoDto.getCodInterno();
 
             if (codInterno.isEmpty()) {
-                AddProdutoAlerts.consultaProdutoInternoErrorAlert();
+                AddProdutoAlerts.consultaProdutoCodigoErrorAlert();
             }
 
             else {
@@ -70,7 +70,7 @@ public class ProdutoBo {
             codEan = objProdutoDto.getCodEan();
 
             if (codEan.isEmpty()) {
-                AddProdutoAlerts.consultaProdutoErrorAlert();
+                AddProdutoAlerts.consultaProdutoCodigoErrorAlert();
             }
 
             else {

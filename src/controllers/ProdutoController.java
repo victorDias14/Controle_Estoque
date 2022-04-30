@@ -23,6 +23,18 @@ public class ProdutoController {
     private Button btnConfirmar;
 
     @FXML
+    private Button btnConsultarInterno;
+
+    @FXML
+    private Button btnConsultarEan;
+
+    @FXML
+    private Button btnAlterar;
+
+    @FXML
+    private Button btnApagar;
+
+    @FXML
     private TextField txfCodEan;
 
     @FXML
@@ -71,59 +83,27 @@ public class ProdutoController {
     }
 
     @FXML
-    void consultarInterno(ActionEvent event) {
-        codInterno = txfCodInterno.getText();
+    void consultar(ActionEvent event) {
 
         ProdutoDto objProdutoDto = new ProdutoDto();
-        objProdutoDto.setCodInterno(codInterno);
+        String tipoConsulta = null;
+
+        if (event.getSource() == btnConsultarInterno) {
+            codInterno = txfCodInterno.getText();
+            objProdutoDto.setCodInterno(codInterno);
+            tipoConsulta = "interno";
+        }
+
+        else if (event.getSource() == btnConsultarEan) {
+            codEan = txfCodEan.getText();
+            objProdutoDto.setCodEan(codEan);
+            tipoConsulta = "ean";
+        }
 
         ProdutoBo objProdutoBo = new ProdutoBo();
-        objProdutoBo.consulta(objProdutoDto, "interno");
+        objProdutoBo.consulta(objProdutoDto, tipoConsulta);
 
-        txfCodInterno.setText(objProdutoDto.getCodInterno());
-        txfCodEan.setText(objProdutoDto.getCodEan());
-        txfNomeProduto.setText(objProdutoDto.getNomeProduto());
-        txfValorVenda.setText(objProdutoDto.getValorVenda());
-    }
-
-    @FXML
-    void consultarEan(ActionEvent event) {
-        codEan = txfCodEan.getText();
-
-        if (codEan == "") {
-            AddProdutoAlerts.consultaProdutoErrorAlert();
-            limpaCampos();
-        }
-
-        else {
-
-            String sqlConsultaEan = "SELECT * FROM produto WHERE codigo_ean = ?";
-
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlConsultaEan);
-                st.setString(1, codEan);
-                rs = st.executeQuery();
-
-                if (rs.isBeforeFirst()) {
-                    while (rs.next()) {
-                        txfCodInterno.setText(rs.getString("codigo_interno"));
-                        preencheCamposConsulta(rs);
-                        
-                    }                    
-                }
-                
-                else {
-                    AddProdutoAlerts.consultaProdutoErrorAlert();
-                    limpaCampos();
-                }
-            }
-
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
+        preencheCamposConsulta(objProdutoDto);        
     }
 
     @FXML
@@ -224,21 +204,10 @@ public class ProdutoController {
         txfValorVenda.clear();
     }
 
-    void preencheCamposConsulta(ResultSet rs) {
-        try {
-            this.rs = rs;
-            txfNomeProduto.setText(this.rs.getString("nome_produto"));
-            txfQuantidade.setText(rs.getString("quantidade_estoque"));
-            txfValorVenda.setText(rs.getString("valor_venda"));
-
-            codInternoOld = txfCodInterno.getText();
-            codEanOld = txfCodEan.getText();
-            nomeProdutoOld = txfNomeProduto.getText();
-            valorVendaOld = txfValorVenda.getText();
-        }
-
-        catch (Exception e) {
-            e.printStackTrace();
-        }        
+    void preencheCamposConsulta(ProdutoDto objProdutoDto) {
+        txfCodInterno.setText(objProdutoDto.getCodInterno());
+        txfCodEan.setText(objProdutoDto.getCodEan());
+        txfNomeProduto.setText(objProdutoDto.getNomeProduto());
+        txfValorVenda.setText(objProdutoDto.getValorVenda());        
     }
 }

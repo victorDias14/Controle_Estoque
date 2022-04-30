@@ -25,7 +25,7 @@ public class AddProdutoAlerts {
         alert.show();
     }
 
-    public static void consultaProdutoInternoErrorAlert() {
+    public static void consultaProdutoCodigoErrorAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro");
         alert.setHeaderText("Nenhum código informado.");

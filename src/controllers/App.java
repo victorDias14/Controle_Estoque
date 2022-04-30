@@ -45,7 +45,7 @@ public class App extends Application {
         Parent fxmlAdicionarLoja = FXMLLoader.load(getClass().getResource("/views/AdicionarLoja.fxml"));
         adicionarLoja = new Scene(fxmlAdicionarLoja);        
 
-        primaryStage.setScene(login);     
+        primaryStage.setScene(adicionarProduto);     
         primaryStage.show();
         
     }

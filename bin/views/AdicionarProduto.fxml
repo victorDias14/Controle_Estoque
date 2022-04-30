@@ -19,8 +19,8 @@
       <TextField fx:id="txfValorVenda" layoutX="122.0" layoutY="147.0" />
       <Text layoutX="14.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Código EAN" />
       <TextField fx:id="txfCodEan" layoutX="123.0" layoutY="44.0" />
-      <Button fx:id="btnConsultarInterno" layoutX="281.0" layoutY="10.0" mnemonicParsing="false" onAction="#consultarInterno" text="Consultar" />
-      <Button fx:id="btnConsultarEan" layoutX="281.0" layoutY="44.0" mnemonicParsing="false" onAction="#consultarEan" text="Consultar" />
+      <Button fx:id="btnConsultarInterno" layoutX="281.0" layoutY="10.0" mnemonicParsing="false" onAction="#consultar" text="Consultar" />
+      <Button fx:id="btnConsultarEan" layoutX="281.0" layoutY="44.0" mnemonicParsing="false" onAction="#consultar" text="Consultar" />
       <Button fx:id="btnAlterar" layoutX="122.0" layoutY="191.0" mnemonicParsing="false" onAction="#alterar" text="Alterar" />
       <Button fx:id="btnApagar" layoutX="182.0" layoutY="191.0" mnemonicParsing="false" onAction="#apagar" text="Apagar" />
    </children>
