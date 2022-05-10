@@ -3,9 +3,7 @@ package controllers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import alerts.AddProdutoAlerts;
 import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
@@ -126,37 +124,14 @@ public class ProdutoController {
         codEan = txfCodEan.getText();
         codInterno = txfCodInterno.getText();
 
-        if (codEan == "" || codInterno == "" || nomeProduto == "") {
-            AddProdutoAlerts.apagaProdutoErrorAlert();
-        }
+        ProdutoDto objProdutoDto = new ProdutoDto();
+        objProdutoDto.setCodEan(codEan);
+        objProdutoDto.setCodInterno(codInterno);
 
-        else {
-            String sqlDeleteProduto = "DELETE FROM produto WHERE codigo_interno = ?;";
-            String sqlDeleteEan = "DELETE FROM ean WHERE codigo_ean = ?;";
+        ProdutoBo objProdutoBo = new ProdutoBo();
+        objProdutoBo.apagar(objProdutoDto);
 
-            Long codEanConvertido = Long.parseLong(codEan);
-            int codInternoConvertido = Integer.parseInt(codInterno);
-
-            try {
-                conn = DB.getConnection();
-
-                st = conn.prepareStatement(sqlDeleteEan);
-                st.setLong(1, codEanConvertido);
-                st.executeUpdate();
-
-                st = conn.prepareStatement(sqlDeleteProduto);
-                st.setInt(1, codInternoConvertido);
-                st.executeUpdate();
-
-                AddProdutoAlerts.apagaProdutoAlert();             
-                    
-            }
-
-            catch (SQLException e) {
-                e.printStackTrace();
-                AddProdutoAlerts.produtoErrorAlertGeneric();
-            }
-        }
+        limpaCampos();
     }            
 
     @FXML
@@ -166,11 +141,7 @@ public class ProdutoController {
             txfCodInterno.setEditable(true);
             txfCodEan.setEditable(true);
             
-            txfCodInterno.clear();
-            txfCodEan.clear();
-            txfNomeProduto.clear();
-            txfQuantidade.clear();
-            txfValorVenda.clear();
+            limpaCampos();
         }
 
         else {
@@ -186,5 +157,13 @@ public class ProdutoController {
         txfCodEan.setText(objProdutoDto.getCodEan());
         txfNomeProduto.setText(objProdutoDto.getNomeProduto());
         txfValorVenda.setText(objProdutoDto.getValorVenda());        
+    }
+
+    void limpaCampos(){
+        txfCodInterno.clear();
+        txfCodEan.clear();
+        txfNomeProduto.clear();
+        txfQuantidade.clear();
+        txfValorVenda.clear();
     }
 }

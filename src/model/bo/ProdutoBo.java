@@ -133,7 +133,27 @@ public class ProdutoBo {
             else {
                 AddProdutoAlerts.consultaProdutoErrorAlert();
             }
+        }        
+    }
+
+    public void apagar(ProdutoDto objProdutoDto) {
+        retornoCamposVazios = verificaCamposVazios(objProdutoDto);
+
+        if(retornoCamposVazios == 0){
+            AddProdutoAlerts.produtoErrorAlertEmptyField();
         }
-        
+
+        else {
+            ProdutoDao objProdutoDao = new ProdutoDao();
+            retornoProdutoExiste = objProdutoDao.verificaProdutoExiste(objProdutoDto);
+
+            if(retornoProdutoExiste == 1){
+                objProdutoDao.apagar(objProdutoDto);
+            }
+
+            else {
+                AddProdutoAlerts.apagaProdutoErrorAlert();
+            }
+        }
     }
 }

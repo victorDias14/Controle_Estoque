@@ -141,4 +141,32 @@ public class ProdutoDao {
             e.printStackTrace();
         }
     }
+
+    public void apagar(ProdutoDto objProdutoDto){
+        codEan = objProdutoDto.getCodEan();
+        codInterno = objProdutoDto.getCodInterno();
+
+        String sqlDeleteInterno = DB.loadSql("deletaInterno");
+        String sqlDeleteEan = DB.loadSql("deletaEan");
+
+        try {
+            conn = DB.getConnection();
+
+            st = conn.prepareStatement(sqlDeleteEan);
+            st.setString(1, codEan);
+            st.executeUpdate();
+            
+            st = conn.prepareStatement(sqlDeleteInterno);
+            st.setString(1, codInterno);
+            st.executeUpdate();
+
+            AddProdutoAlerts.apagaProdutoAlert();             
+                
+        }
+
+        catch (SQLException e) {
+            e.printStackTrace();
+            AddProdutoAlerts.produtoErrorAlertGeneric();
+        }
+    }
 }

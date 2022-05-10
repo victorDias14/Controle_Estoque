@@ -40,7 +40,7 @@ public class AddProdutoAlerts {
     }
 
     public static void apagaProdutoAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Sucesso");
         alert.setHeaderText("Produto apagado com sucesso.");
         alert.show();
@@ -49,7 +49,7 @@ public class AddProdutoAlerts {
     public static void apagaProdutoErrorAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro");
-        alert.setHeaderText("Consulte um produto primeiro");
+        alert.setHeaderText("Consulte um produto primeiro.");
         alert.show();
     }
 
