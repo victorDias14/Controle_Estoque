@@ -1,10 +1,5 @@
 package controllers;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,10 +41,6 @@ public class ProdutoController {
 
     @FXML
     private TextField txfValorVenda;
-
-    private Connection conn = null;
-    private PreparedStatement st = null;
-    private ResultSet rs = null;
 
     private String codEan = null;
     private String codInterno = null;
@@ -146,9 +137,6 @@ public class ProdutoController {
 
         else {
             App.changeScreen(Screens.TELA_INICIAL);
-            DB.closeStatement(st);
-            DB.closeResultset(rs);
-            DB.closeConnection();
         }
     }
 

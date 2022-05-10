@@ -2,7 +2,7 @@ package alerts;
 
 import javafx.scene.control.Alert;
 
-public class AddProdutoAlerts {
+public class ProdutoAlerts {
 
     public static void produtoAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

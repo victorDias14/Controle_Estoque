@@ -1,6 +1,6 @@
 package model.bo;
 
-import alerts.AddProdutoAlerts;
+import alerts.ProdutoAlerts;
 import model.dao.ProdutoDao;
 import model.dto.ProdutoDto;
 
@@ -60,7 +60,7 @@ public class ProdutoBo {
         retornoCamposVazios = verificaCamposVazios(objProdutoDto);
 
         if(retornoCamposVazios == 0){
-            AddProdutoAlerts.produtoErrorAlertEmptyField();
+            ProdutoAlerts.produtoErrorAlertEmptyField();
         }
 
         else {
@@ -69,15 +69,15 @@ public class ProdutoBo {
             retornoProdutoExiste = verificaProdutoExiste(objProdutoDto);
 
             if (retornoCamposVazios == 0){
-                AddProdutoAlerts.codInternoExisteAlert();
+                ProdutoAlerts.codInternoExisteAlert();
             }
 
             else if (retornoCamposVazios == 1){
-                AddProdutoAlerts.codEanExisteAlert();
+                ProdutoAlerts.codEanExisteAlert();
             }
 
             else if (retornoCamposVazios == 2) {
-                AddProdutoAlerts.nomeProdutoExisteAlert();
+                ProdutoAlerts.nomeProdutoExisteAlert();
             }
 
             else {
@@ -92,7 +92,7 @@ public class ProdutoBo {
             codInterno = objProdutoDto.getCodInterno();
 
             if (codInterno == "") {
-                AddProdutoAlerts.consultaProdutoCodigoErrorAlert();
+                ProdutoAlerts.consultaProdutoCodigoErrorAlert();
             }
 
             else {
@@ -105,7 +105,7 @@ public class ProdutoBo {
             codEan = objProdutoDto.getCodEan();
 
             if (codEan == "") {
-                AddProdutoAlerts.consultaProdutoCodigoErrorAlert();
+                ProdutoAlerts.consultaProdutoCodigoErrorAlert();
             }
 
             else {
@@ -119,7 +119,7 @@ public class ProdutoBo {
         retornoCamposVazios = verificaCamposVazios(objProdutoDto);
 
         if (retornoCamposVazios == 0){
-            AddProdutoAlerts.produtoErrorAlertEmptyField();
+            ProdutoAlerts.produtoErrorAlertEmptyField();
         }
 
         else {
@@ -131,7 +131,7 @@ public class ProdutoBo {
             }
 
             else {
-                AddProdutoAlerts.consultaProdutoErrorAlert();
+                ProdutoAlerts.consultaProdutoErrorAlert();
             }
         }        
     }
@@ -140,7 +140,7 @@ public class ProdutoBo {
         retornoCamposVazios = verificaCamposVazios(objProdutoDto);
 
         if(retornoCamposVazios == 0){
-            AddProdutoAlerts.produtoErrorAlertEmptyField();
+            ProdutoAlerts.produtoErrorAlertEmptyField();
         }
 
         else {
@@ -152,7 +152,7 @@ public class ProdutoBo {
             }
 
             else {
-                AddProdutoAlerts.apagaProdutoErrorAlert();
+                ProdutoAlerts.apagaProdutoErrorAlert();
             }
         }
     }

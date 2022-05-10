@@ -3,7 +3,7 @@ package alerts;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class AddFornecedorAlerts {
+public class FornecedorAlerts {
     public static void fornecedorAlert() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Fornecedor adicionado");

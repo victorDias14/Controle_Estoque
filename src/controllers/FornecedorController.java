@@ -5,15 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import alerts.AddFornecedorAlerts;
+import alerts.FornecedorAlerts;
 import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import model.bo.FornecedorBo;
+import model.dto.FornecedorDto;
 
-public class AddFornecedorController {
+public class FornecedorController {
     @FXML
     private Button btnConfirmar;
 
@@ -26,7 +28,6 @@ public class AddFornecedorController {
     @FXML
     private TextField txfNomeFornecedor;
 
-    private String nomeFornecedor;
     private String cnpj;
     private Long cnpjLong;
     private Connection conn;
@@ -35,32 +36,13 @@ public class AddFornecedorController {
 
     @FXML
     void adicionar(ActionEvent event) {
-        
-        nomeFornecedor = txfNomeFornecedor.getText();
-        cnpj = txfCnpj.getText();
 
-        if (nomeFornecedor == "" || cnpj == "") {
-            AddFornecedorAlerts.fornecedorAddErrorAlert();
-        }
+        FornecedorDto objFornecedorDto = new FornecedorDto();
+        objFornecedorDto.setCnpj(Long.parseLong(txfCnpj.getText()));
+        objFornecedorDto.setNomeFornecedor(txfNomeFornecedor.getText());
 
-        else {
-            cnpjLong = Long.parseLong(cnpj);
-            String sqlInsertFornecedor = "INSERT INTO fornecedores (nome, cnpj) VALUES (?, ?)";
-
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlInsertFornecedor);
-                st.setString(1, nomeFornecedor);
-                st.setLong(2, cnpjLong);
-                st.executeUpdate();
-            } 
-            
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            AddFornecedorAlerts.fornecedorAlert();
-        }        
+        FornecedorBo objFornecedorBo = new FornecedorBo();
+        objFornecedorBo.adicionar(objFornecedorDto);        
     }
 
     @FXML
@@ -68,7 +50,7 @@ public class AddFornecedorController {
         cnpj = txfCnpj.getText();
 
         if (cnpj == "") {
-            AddFornecedorAlerts.fornecedorConsultaErrorAlert();
+            FornecedorAlerts.fornecedorConsultaErrorAlert();
         }
 
         else {
@@ -87,7 +69,7 @@ public class AddFornecedorController {
                 e.printStackTrace();
             }
 
-            AddFornecedorAlerts.apagaFornecedorAlert();
+            FornecedorAlerts.apagaFornecedorAlert();
         }
     }
 
@@ -96,7 +78,7 @@ public class AddFornecedorController {
         cnpj = txfCnpj.getText();
 
         if (cnpj == "") {
-            AddFornecedorAlerts.fornecedorConsultaErrorAlert();
+            FornecedorAlerts.fornecedorConsultaErrorAlert();
         }
 
         else {
@@ -116,7 +98,7 @@ public class AddFornecedorController {
                 }
 
                 else {
-                    AddFornecedorAlerts.fornecedorConsultaInformationAlert();
+                    FornecedorAlerts.fornecedorConsultaInformationAlert();
                     txfCnpj.clear();
                 }
 

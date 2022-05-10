@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import alerts.AddProdutoAlerts;
+import alerts.ProdutoAlerts;
 import db.DB;
 import model.dto.ProdutoDto;
 
@@ -80,12 +80,12 @@ public class ProdutoDao {
             st.setString(1, codEan);
             st.setString(2, codInterno);
             st.executeUpdate();
-            AddProdutoAlerts.produtoAlert();
+            ProdutoAlerts.produtoAlert();
         }
 
         catch (SQLException e) {
             e.printStackTrace();
-            AddProdutoAlerts.produtoErrorAlertGeneric();
+            ProdutoAlerts.produtoErrorAlertGeneric();
         }
     }
 
@@ -108,7 +108,7 @@ public class ProdutoDao {
             }
             
             else {
-                AddProdutoAlerts.consultaProdutoErrorAlert();
+                ProdutoAlerts.consultaProdutoErrorAlert();
             }
         }
 
@@ -134,7 +134,7 @@ public class ProdutoDao {
             st.setString(4, codEan);
             st.executeUpdate();
 
-            AddProdutoAlerts.alteraProdutoAlert();
+            ProdutoAlerts.alteraProdutoAlert();
         }
 
         catch (SQLException e) {
@@ -160,13 +160,13 @@ public class ProdutoDao {
             st.setString(1, codInterno);
             st.executeUpdate();
 
-            AddProdutoAlerts.apagaProdutoAlert();             
+            ProdutoAlerts.apagaProdutoAlert();             
                 
         }
 
         catch (SQLException e) {
             e.printStackTrace();
-            AddProdutoAlerts.produtoErrorAlertGeneric();
+            ProdutoAlerts.produtoErrorAlertGeneric();
         }
     }
 }
