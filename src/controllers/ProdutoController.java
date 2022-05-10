@@ -58,13 +58,6 @@ public class ProdutoController {
     private String nomeProduto = null;
     private String valorVenda = null;
 
-    private String codInternoOld = null;
-    private String codEanOld = null;
-    private String nomeProdutoOld = null;
-    private String valorVendaOld = null;
-
-    private String sqlAlteraProduto;
-
     @FXML
     void adicionar(ActionEvent event) {
         codEan = txfCodEan.getText();
@@ -79,7 +72,7 @@ public class ProdutoController {
         objProdutoDto.setValorVenda(valorVenda);
 
         ProdutoBo objProdutoBo = new ProdutoBo();
-        objProdutoBo.verificaCamposVazios(objProdutoDto);
+        objProdutoBo.adicionar(objProdutoDto);
     }
 
     @FXML
@@ -87,6 +80,9 @@ public class ProdutoController {
 
         ProdutoDto objProdutoDto = new ProdutoDto();
         String tipoConsulta = null;
+
+        txfCodInterno.setEditable(false);
+        txfCodEan.setEditable(false);
 
         if (event.getSource() == btnConsultarInterno) {
             codInterno = txfCodInterno.getText();
@@ -113,39 +109,16 @@ public class ProdutoController {
         codEan = txfCodEan.getText();
         nomeProduto = txfNomeProduto.getText();
         valorVenda = txfValorVenda.getText();
+
+        ProdutoDto objProdutoDto = new ProdutoDto();
+        objProdutoDto.setCodInterno(codInterno);
+        objProdutoDto.setCodEan(codEan);
+        objProdutoDto.setNomeProduto(nomeProduto);
+        objProdutoDto.setValorVenda(valorVenda);
+
+        ProdutoBo objProdutoBo = new ProdutoBo();
+        objProdutoBo.alterar(objProdutoDto);
         
-        if (codInterno == "" || codEan == "" || nomeProduto == "") {
-            AddProdutoAlerts.produtoErrorAlertEmptyField();
-        }
-        
-        else {
-
-            double valorVendaConvertido = Double.parseDouble(valorVenda);
-
-            int codInternoOldConvertido = Integer.parseInt(codInternoOld);
-            Long codEanOldConvertido = Long.parseLong(codEanOld);
-            double valorVendaOldConvertido = Double.parseDouble(valorVendaOld);
-            
-            sqlAlteraProduto = "UPDATE produto SET nome_produto = ?, valor_venda = ? WHERE codigo_interno = ? AND codigo_ean = ? AND nome_produto = ? AND valor_venda = ?";            
-
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlAlteraProduto);
-                st.setString(1, nomeProduto);
-                st.setDouble(2, valorVendaConvertido);
-                st.setInt(3, codInternoOldConvertido);
-                st.setLong(4, codEanOldConvertido);
-                st.setString(5, nomeProdutoOld);
-                st.setDouble(6, valorVendaOldConvertido);
-                st.executeUpdate();
-
-                AddProdutoAlerts.alteraProdutoAlert();
-            }
-
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @FXML
@@ -188,20 +161,24 @@ public class ProdutoController {
 
     @FXML
     void voltar(ActionEvent event) {
-        App.changeScreen(Screens.TELA_INICIAL);
 
-        DB.closeStatement(st);
-        DB.closeResultset(rs);
-        DB.closeConnection();
-        
-    }
+        if(txfCodEan.editableProperty().getValue().equals(false) || txfCodInterno.editableProperty().getValue().equals(false)){
+            txfCodInterno.setEditable(true);
+            txfCodEan.setEditable(true);
+            
+            txfCodInterno.clear();
+            txfCodEan.clear();
+            txfNomeProduto.clear();
+            txfQuantidade.clear();
+            txfValorVenda.clear();
+        }
 
-    public void limpaCampos(){
-        txfCodInterno.clear();
-        txfCodEan.clear();
-        txfNomeProduto.clear();
-        txfQuantidade.clear();
-        txfValorVenda.clear();
+        else {
+            App.changeScreen(Screens.TELA_INICIAL);
+            DB.closeStatement(st);
+            DB.closeResultset(rs);
+            DB.closeConnection();
+        }
     }
 
     void preencheCamposConsulta(ProdutoDto objProdutoDto) {

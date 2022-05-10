@@ -1,7 +1,6 @@
 package model.bo;
 
 import alerts.AddProdutoAlerts;
-import controllers.ProdutoController;
 import model.dao.ProdutoDao;
 import model.dto.ProdutoDto;
 
@@ -13,8 +12,11 @@ public class ProdutoBo {
     private String codInternoBanco;
     private String codEanBanco;
     private String nomeProdutoBanco;
+
+    private int retornoCamposVazios;
+    private int retornoProdutoExiste;
     
-    public void verificaProdutoExiste(ProdutoDto objProdutoDto){
+    public int verificaProdutoExiste(ProdutoDto objProdutoDto){
         codEan = objProdutoDto.getCodEan();
         codInterno = objProdutoDto.getCodInterno();
         nomeProduto = objProdutoDto.getNomeProduto();
@@ -24,31 +26,64 @@ public class ProdutoBo {
         nomeProdutoBanco = objProdutoDto.getNomeProdutoBanco();
 
         if(codInternoBanco.equals(codInterno)){
-            AddProdutoAlerts.codInternoExisteAlert();
+            return 0;
         }
 
-        else if(codEanBanco.equals(codEan)) {
-            AddProdutoAlerts.codEanExisteAlert();
+        else if(codEanBanco.equals(codEan)) { 
+            return 1;
         }
 
         else if(nomeProdutoBanco.equals(nomeProduto)) {
-            AddProdutoAlerts.nomeProdutoExisteAlert();
+            return 2;
+        }
+
+        else {
+            return 3;
         }
     }
 
-    public void verificaCamposVazios(ProdutoDto objProdutoDto){
+    int verificaCamposVazios(ProdutoDto objProdutoDto){
         codEan = objProdutoDto.getCodEan();
         codInterno = objProdutoDto.getCodInterno();
         nomeProduto = objProdutoDto.getNomeProduto();
 
         if (codEan == "" || codInterno == "" || nomeProduto == "") {
+            return 0;
+        }
+
+        else {
+            return 1;
+        }
+    }
+
+    public void adicionar(ProdutoDto objProdutoDto){
+        retornoCamposVazios = verificaCamposVazios(objProdutoDto);
+
+        if(retornoCamposVazios == 0){
             AddProdutoAlerts.produtoErrorAlertEmptyField();
         }
 
         else {
             ProdutoDao objProdutoDao = new ProdutoDao();
-            objProdutoDao.adicionaProduto(objProdutoDto);
-        }
+            objProdutoDao.verificaProdutoExiste(objProdutoDto);
+            retornoProdutoExiste = verificaProdutoExiste(objProdutoDto);
+
+            if (retornoCamposVazios == 0){
+                AddProdutoAlerts.codInternoExisteAlert();
+            }
+
+            else if (retornoCamposVazios == 1){
+                AddProdutoAlerts.codEanExisteAlert();
+            }
+
+            else if (retornoCamposVazios == 2) {
+                AddProdutoAlerts.nomeProdutoExisteAlert();
+            }
+
+            else {
+                objProdutoDao.adicionaProduto(objProdutoDto);
+            }            
+        }        
     }
 
     public void consulta(ProdutoDto objProdutoDto, String tipoConsulta) {
@@ -56,7 +91,7 @@ public class ProdutoBo {
         if (tipoConsulta == "interno") {
             codInterno = objProdutoDto.getCodInterno();
 
-            if (codInterno.isEmpty()) {
+            if (codInterno == "") {
                 AddProdutoAlerts.consultaProdutoCodigoErrorAlert();
             }
 
@@ -69,7 +104,7 @@ public class ProdutoBo {
         else if (tipoConsulta == "ean"){
             codEan = objProdutoDto.getCodEan();
 
-            if (codEan.isEmpty()) {
+            if (codEan == "") {
                 AddProdutoAlerts.consultaProdutoCodigoErrorAlert();
             }
 
@@ -80,8 +115,25 @@ public class ProdutoBo {
         }
     }
 
-    public static void limpaCampos() {
-        ProdutoController prodControl = new ProdutoController();
-        prodControl.limpaCampos();
+    public void alterar(ProdutoDto objProdutoDto) {
+        retornoCamposVazios = verificaCamposVazios(objProdutoDto);
+
+        if (retornoCamposVazios == 0){
+            AddProdutoAlerts.produtoErrorAlertEmptyField();
+        }
+
+        else {
+            ProdutoDao objProdutoDao = new ProdutoDao();
+            retornoProdutoExiste = objProdutoDao.verificaProdutoExiste(objProdutoDto);
+
+            if(retornoProdutoExiste == 1){
+                objProdutoDao.alterar(objProdutoDto);
+            }
+
+            else {
+                AddProdutoAlerts.consultaProdutoErrorAlert();
+            }
+        }
+        
     }
 }

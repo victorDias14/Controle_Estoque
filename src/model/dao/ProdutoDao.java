@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 import alerts.AddProdutoAlerts;
 import db.DB;
-import model.bo.ProdutoBo;
 import model.dto.ProdutoDto;
 
 public class ProdutoDao {
@@ -21,8 +20,7 @@ public class ProdutoDao {
     private String nomeProduto;
     private String valorVenda;
 
-    public void adicionaProduto(ProdutoDto objProdutoDto) {
-        
+    public int verificaProdutoExiste(ProdutoDto objProdutoDto) {
         codInterno = objProdutoDto.getCodInterno();
         codEan = objProdutoDto.getCodEan();
         nomeProduto = objProdutoDto.getNomeProduto();
@@ -43,37 +41,46 @@ public class ProdutoDao {
                     objProdutoDto.setCodInternoBanco(rs.getString("codigo_interno"));
                     objProdutoDto.setCodEanBanco(rs.getString("codigo_ean"));
                     objProdutoDto.setNomeProdutoBanco(rs.getString("nome_produto"));
-
-                    ProdutoBo objProdutoBo = new ProdutoBo();
-                    objProdutoBo.verificaProdutoExiste(objProdutoDto);
                 }
+
+                return 1;
             }
 
             else {
-                String sqlInsertProduto = DB.loadSql("insertProduto");
-                String sqlInsertEan = DB.loadSql("insertEan");
+                return 0;
+            }
+        }
 
-                try {
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public void adicionaProduto(ProdutoDto objProdutoDto) {
+        
+        codInterno = objProdutoDto.getCodInterno();
+        codEan = objProdutoDto.getCodEan();
+        nomeProduto = objProdutoDto.getNomeProduto();
+        valorVenda = objProdutoDto.getValorVenda();
+
+        String sqlInsertProduto = DB.loadSql("insertProduto");
+        String sqlInsertEan = DB.loadSql("insertEan");
+
+        try {
                         
-                    st = conn.prepareStatement(sqlInsertProduto);
-                    st.setString(1, codInterno);
-                    st.setString(2, codEan);
-                    st.setString(3, nomeProduto); 
-                    st.setString(4, valorVenda);
-                    st.executeUpdate();
+            st = conn.prepareStatement(sqlInsertProduto);
+            st.setString(1, codInterno);
+            st.setString(2, codEan);
+            st.setString(3, nomeProduto); 
+            st.setString(4, valorVenda);
+            st.executeUpdate();
 
-                    st = conn.prepareStatement(sqlInsertEan);
-                    st.setString(1, codEan);
-                    st.setString(2, codInterno);
-                    st.executeUpdate();
-
-                    AddProdutoAlerts.produtoAlert();
-                }
-
-                catch(SQLException e) {
-                    e.printStackTrace();
-                }
-            }            
+            st = conn.prepareStatement(sqlInsertEan);
+            st.setString(1, codEan);
+            st.setString(2, codInterno);
+            st.executeUpdate();
+            AddProdutoAlerts.produtoAlert();
         }
 
         catch (SQLException e) {
@@ -102,8 +109,32 @@ public class ProdutoDao {
             
             else {
                 AddProdutoAlerts.consultaProdutoErrorAlert();
-                ProdutoBo.limpaCampos();
             }
+        }
+
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void alterar(ProdutoDto objProdutoDto){
+        String sqlAltera = DB.loadSql("alteraProduto");
+
+        codInterno = objProdutoDto.getCodInterno();
+        codEan = objProdutoDto.getCodEan();
+        nomeProduto = objProdutoDto.getNomeProduto();
+        valorVenda = objProdutoDto.getValorVenda();
+
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(sqlAltera);
+            st.setString(1, nomeProduto);
+            st.setString(2, valorVenda);
+            st.setString(3, codInterno);
+            st.setString(4, codEan);
+            st.executeUpdate();
+
+            AddProdutoAlerts.alteraProdutoAlert();
         }
 
         catch (SQLException e) {
