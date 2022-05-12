@@ -22,7 +22,7 @@ public class FornecedorDao {
     int verificaExiste(FornecedorDto objFornecedorDto) {
         cnpj = objFornecedorDto.getCnpj();
 
-        String sqlVerifica = DB.loadSql("verificaExiste");
+        String sqlVerifica = DB.loadSql("verificaExisteFornecedor");
 
         try {
             conn = DB.getConnection();
