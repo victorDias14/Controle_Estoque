@@ -29,47 +29,39 @@ public class FornecedorController {
     private TextField txfNomeFornecedor;
 
     private String cnpj;
-    private Long cnpjLong;
     private Connection conn;
     private PreparedStatement st;
     private ResultSet rs;
 
     @FXML
     void adicionar(ActionEvent event) {
+        if (txfCnpj.getText() == "") {
+            FornecedorAlerts.fornecedorConsultaErrorAlert();
+        }
 
-        FornecedorDto objFornecedorDto = new FornecedorDto();
-        objFornecedorDto.setCnpj(Long.parseLong(txfCnpj.getText()));
-        objFornecedorDto.setNomeFornecedor(txfNomeFornecedor.getText());
+        else {
+            FornecedorDto objFornecedorDto = new FornecedorDto();
+            objFornecedorDto.setCnpj(Long.parseLong(txfCnpj.getText()));
+            objFornecedorDto.setNomeFornecedor(txfNomeFornecedor.getText());
 
-        FornecedorBo objFornecedorBo = new FornecedorBo();
-        objFornecedorBo.adicionar(objFornecedorDto);        
+            FornecedorBo objFornecedorBo = new FornecedorBo();
+            objFornecedorBo.adicionar(objFornecedorDto);
+        }
     }
 
     @FXML
     void apagar(ActionEvent event) {
-        cnpj = txfCnpj.getText();
 
         if (cnpj == "") {
             FornecedorAlerts.fornecedorConsultaErrorAlert();
         }
 
         else {
-            String sqlDeleteFornecedor = "DELETE FROM fornecedores WHERE cnpj = ?";
-            cnpjLong = Long.parseLong(cnpj);
+            FornecedorDto objFornecedorDto = new FornecedorDto();
+            objFornecedorDto.setCnpj(Long.parseLong(txfCnpj.getText()));
 
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlDeleteFornecedor);
-                st.setLong(1, cnpjLong);
-                st.executeUpdate();
-                
-            } 
-            
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            FornecedorAlerts.apagaFornecedorAlert();
+            FornecedorBo objFornecedorBo = new FornecedorBo();
+            objFornecedorBo.apagar(objFornecedorDto);
         }
     }
 
@@ -91,8 +83,8 @@ public class FornecedorController {
                 st.setString(1, cnpj);
                 rs = st.executeQuery();
 
-                if(rs.isBeforeFirst()) {
-                    while(rs.next()) {
+                if (rs.isBeforeFirst()) {
+                    while (rs.next()) {
                         txfNomeFornecedor.setText(rs.getString("nome"));
                     }
                 }
@@ -105,7 +97,7 @@ public class FornecedorController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }        
+        }
     }
 
     @FXML

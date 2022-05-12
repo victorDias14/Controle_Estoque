@@ -17,24 +17,97 @@ public class FornecedorDao {
     private PreparedStatement st;
     private ResultSet rs;
 
-    public void adicionar(FornecedorDto objFornecedorDto) {
-        nomeFornecedor = objFornecedorDto.getNomeFornecedor();
+    int retorno;
+
+    int verificaExiste(FornecedorDto objFornecedorDto) {
         cnpj = objFornecedorDto.getCnpj();
 
-        String sqlInsertFornecedor = DB.loadSql("insertFornecedor");
+        String sqlVerifica = DB.loadSql("verificaExiste");
 
         try {
             conn = DB.getConnection();
-            st = conn.prepareStatement(sqlInsertFornecedor);
-            st.setString(1, nomeFornecedor);
-            st.setLong(2, cnpj);
-            st.executeUpdate();
+            st = conn.prepareStatement(sqlVerifica);
+            st.setLong(1, cnpj);
+            rs = st.executeQuery();
 
-            FornecedorAlerts.fornecedorAlert();
+            if (rs.isBeforeFirst()) {
+                return 0;
+            }
+
+            else {
+                return 1;
+            }
         }
 
         catch (SQLException e) {
             e.printStackTrace();
+            return 2;
+        }
+
+    }
+
+    public void adicionar(FornecedorDto objFornecedorDto) {
+        retorno = verificaExiste(objFornecedorDto);
+
+        if (retorno == 0){
+            FornecedorAlerts.fornecedorExisteAlert();
+        }
+
+        else if (retorno == 1) {
+            nomeFornecedor = objFornecedorDto.getNomeFornecedor();
+            cnpj = objFornecedorDto.getCnpj();
+
+            String sqlInsertFornecedor = DB.loadSql("insertFornecedor");
+
+            try {
+                conn = DB.getConnection();
+                st = conn.prepareStatement(sqlInsertFornecedor);
+                st.setString(1, nomeFornecedor);
+                st.setLong(2, cnpj);
+                st.executeUpdate();
+
+                FornecedorAlerts.fornecedorAlert();
+            }
+
+            catch (SQLException e) {
+                e.printStackTrace();
+                FornecedorAlerts.fornecedorErroGenericoAlert();
+            }
+        }
+        
+        else {
+            FornecedorAlerts.fornecedorErroGenericoAlert();
+        }
+    }
+
+    public void apagar(FornecedorDto objFornecedorDto) {
+        retorno = verificaExiste(objFornecedorDto);
+
+        if (retorno == 0){
+            cnpj = objFornecedorDto.getCnpj();
+            String sqlInsertFornecedor = DB.loadSql("deleteFornecedor");
+
+            try {
+                conn = DB.getConnection();
+                st = conn.prepareStatement(sqlInsertFornecedor);
+                st.setLong(1, cnpj);
+                st.executeUpdate();
+    
+                FornecedorAlerts.apagaFornecedorAlert();
+            }
+    
+            catch (SQLException e) {
+                e.printStackTrace();
+                FornecedorAlerts.fornecedorErroGenericoAlert();
+            }
+        }
+
+        else if(retorno == 1){
+            FornecedorAlerts.fornecedorConsultaInformationAlert();
+        }
+
+        else {
+            FornecedorAlerts.fornecedorErroGenericoAlert();
         }
     }
 }

@@ -38,4 +38,18 @@ public class FornecedorAlerts {
         alert.setHeaderText("Fornecedor apagado com sucesso.");
         alert.show();
     }
+
+    public static void fornecedorExisteAlert() {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("CNPJ já cadastrado.");
+        alert.show();
+    }
+
+    public static void fornecedorErroGenericoAlert() {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Erro genérico.");
+        alert.show();
+    }
 }

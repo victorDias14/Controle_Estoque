@@ -6,16 +6,22 @@ import model.dto.FornecedorDto;
 
 public class FornecedorBo {
     private String nomeFornecedor;
-    private String cnpj;
+    private Long cnpj;
     FornecedorDao objFornecedorDao = new FornecedorDao();
 
     public void adicionar(FornecedorDto objFornecedorDto){
-        if (nomeFornecedor == "" || cnpj == "") {
+        nomeFornecedor = objFornecedorDto.getNomeFornecedor();
+
+        if (nomeFornecedor.isEmpty()) {
             FornecedorAlerts.fornecedorAddErrorAlert();
         }
 
         else {
             objFornecedorDao.adicionar(objFornecedorDto);
         }
-    }    
+    }
+    
+    public void apagar(FornecedorDto objFornecedorDto){
+        objFornecedorDao.apagar(objFornecedorDto);
+    }  
 }
