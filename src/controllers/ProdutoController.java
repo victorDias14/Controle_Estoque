@@ -42,10 +42,10 @@ public class ProdutoController {
     @FXML
     private TextField txfValorVenda;
 
-    private String codEan = null;
-    private String codInterno = null;
-    private String nomeProduto = null;
-    private String valorVenda = null;
+    private String codEan;
+    private String codInterno;
+    private String nomeProduto;
+    private String valorVenda;
 
     @FXML
     void adicionar(ActionEvent event) {
