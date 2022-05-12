@@ -6,7 +6,6 @@ import model.dto.FornecedorDto;
 
 public class FornecedorBo {
     private String nomeFornecedor;
-    private Long cnpj;
     FornecedorDao objFornecedorDao = new FornecedorDao();
 
     public void adicionar(FornecedorDto objFornecedorDto){
@@ -23,5 +22,9 @@ public class FornecedorBo {
     
     public void apagar(FornecedorDto objFornecedorDto){
         objFornecedorDao.apagar(objFornecedorDto);
-    }  
+    }
+    
+    public void consultar(FornecedorDto objDto){
+        objFornecedorDao.consultar(objDto);
+    }
 }

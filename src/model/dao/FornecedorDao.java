@@ -110,4 +110,33 @@ public class FornecedorDao {
             FornecedorAlerts.fornecedorErroGenericoAlert();
         }
     }
+
+    public void consultar(FornecedorDto objFornecedorDto){
+        cnpj = objFornecedorDto.getCnpj();
+
+        String sqlVerifica = DB.loadSql("verificaExiste");
+
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(sqlVerifica);
+            st.setLong(1, cnpj);
+            rs = st.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                while (rs.next()) {
+                    objFornecedorDto.setNomeFornecedor(rs.getString("nome"));
+                    objFornecedorDto.setCnpj(Long.parseLong(rs.getString("cnpj")));
+                }  
+            }
+
+            else {
+                FornecedorAlerts.fornecedorConsultaInformationAlert();
+            }
+        }
+
+        catch (SQLException e) {
+            e.printStackTrace();
+            FornecedorAlerts.fornecedorErroGenericoAlert();
+        }
+    }
 }

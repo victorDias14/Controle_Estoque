@@ -1,9 +1,7 @@
 package controllers;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import alerts.FornecedorAlerts;
 import db.DB;
@@ -29,7 +27,6 @@ public class FornecedorController {
     private TextField txfNomeFornecedor;
 
     private String cnpj;
-    private Connection conn;
     private PreparedStatement st;
     private ResultSet rs;
 
@@ -67,36 +64,17 @@ public class FornecedorController {
 
     @FXML
     void consultar(ActionEvent event) {
-        cnpj = txfCnpj.getText();
-
         if (cnpj == "") {
             FornecedorAlerts.fornecedorConsultaErrorAlert();
         }
 
         else {
+            FornecedorDto objFornecedorDto = new FornecedorDto();
+            objFornecedorDto.setCnpj(Long.parseLong(txfCnpj.getText()));
 
-            String sqlConsultaFornecedor = "SELECT nome FROM fornecedores WHERE cnpj = ?";
-
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlConsultaFornecedor);
-                st.setString(1, cnpj);
-                rs = st.executeQuery();
-
-                if (rs.isBeforeFirst()) {
-                    while (rs.next()) {
-                        txfNomeFornecedor.setText(rs.getString("nome"));
-                    }
-                }
-
-                else {
-                    FornecedorAlerts.fornecedorConsultaInformationAlert();
-                    txfCnpj.clear();
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            FornecedorBo objFornecedorBo = new FornecedorBo();
+            objFornecedorBo.consultar(objFornecedorDto);
+            preencheCamposConsulta(objFornecedorDto);
         }
     }
 
@@ -107,5 +85,9 @@ public class FornecedorController {
         DB.closeStatement(st);
         DB.closeResultset(rs);
         DB.closeConnection();
+    }
+
+    void preencheCamposConsulta(FornecedorDto objFornecedorDto) {
+        txfNomeFornecedor.setText(objFornecedorDto.getNomeFornecedor()); 
     }
 }
