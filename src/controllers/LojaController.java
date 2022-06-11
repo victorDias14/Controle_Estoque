@@ -3,17 +3,18 @@ package controllers;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import alerts.AddLojaAlerts;
+import alerts.LojaAlerts;
 import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import model.bo.LojaBo;
+import model.dto.LojaDto;
 
-public class AddLojaController {
+public class LojaController {
     @FXML
     private Button btnAdicionar;
 
@@ -61,53 +62,33 @@ public class AddLojaController {
         numeroLoja = txfNumeroLoja.getText();
         cepLoja = txfCepLoja.getText();
 
-        if (codigoLoja == "" || nomeLoja == "" || cnpjLoja == "" || ruaLoja == "" || numeroLoja == "" || cepLoja == "") {
-            AddLojaAlerts.campoVazioLojaAlert();
+        if (codigoLoja.isBlank() || nomeLoja.isBlank() || cnpjLoja.isBlank() || ruaLoja.isBlank() || numeroLoja.isBlank() || cepLoja.isBlank()) {
+            LojaAlerts.campoVazioLojaAlert();
         }
 
         else {
-            String sqlLojaExiste = "SELECT codigo, nome, cnpj FROM loja WHERE codigo = ? AND nome = ? AND cnpj = ?";
-
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlLojaExiste);
-                st.setString(1, codigoLoja);
-                st.setString(2, nomeLoja);
-                st.setString(3, cnpjLoja);
-                rs = st.executeQuery();
-
-                if (rs.isBeforeFirst()) {
-                    while (rs.next()) {
-                        if (rs.getString("codigo").equals(codigoLoja)) {
-                            AddLojaAlerts.codigoExisteLojaAlert();
-                        }
-                    }
-                }
-
-                else {
-                    String sqlInsertLoja = "INSERT INTO loja VALUES (?, ?, ?, ?, ?, ?)";
-
-                    try {
-                        st = conn.prepareStatement(sqlInsertLoja);
-                        st.setString(1, codigoLoja);
-                        st.setString(2, nomeLoja);
-                        st.setString(3, cnpjLoja);
-                        st.setString(4, ruaLoja);
-                        st.setString(5, numeroLoja);
-                        st.setString(6, cepLoja);
-                        st.executeUpdate();
-
-                        AddLojaAlerts.lojaAdicionadaAlert();                        
-                    }
-
-                    catch (SQLException e) {
-                        e.printStackTrace();
-                    }    
-                }               
-            } 
             
-            catch (SQLException e) {
-                e.printStackTrace();
+            LojaDto objLojaDto = new LojaDto();
+            objLojaDto.setCodigoLoja(codigoLoja);
+            objLojaDto.setNomeLoja(nomeLoja);
+            objLojaDto.setCnpjLoja(cnpjLoja);
+            objLojaDto.setRuaLoja(ruaLoja);
+            objLojaDto.setNumeroLoja(numeroLoja);
+            objLojaDto.setCepLoja(cepLoja);
+
+            LojaBo objLojaBo = new LojaBo(); 
+            int retorno = objLojaBo.adicionar(objLojaDto);
+
+            if(retorno == 0){
+                LojaAlerts.lojaJaCadastradaAlert();
+            }
+
+            else if(retorno == 1){
+                LojaAlerts.lojaAdicionadaAlert();
+            }
+
+            else{
+
             }
         }
     }
@@ -117,7 +98,7 @@ public class AddLojaController {
         codigoLoja = txfCodigoLoja.getText();
 
         if(codigoLoja == "") {
-            AddLojaAlerts.campoVazioLojaAlert();
+            LojaAlerts.campoVazioLojaAlert();
         }
 
         else {
@@ -130,7 +111,7 @@ public class AddLojaController {
                 st.setString(1, codigoLoja);
                 st.executeUpdate();
 
-                AddLojaAlerts.LojaApagadaAlert();
+                LojaAlerts.lojaApagadaAlert();
             } 
             
             catch (Exception e) {
@@ -145,7 +126,7 @@ public class AddLojaController {
         codigoLoja = txfCodigoLoja.getText();
 
         if (codigoLoja.isBlank()) {
-            AddLojaAlerts.campoVazioLojaAlert();
+            LojaAlerts.campoVazioLojaAlert();
         }
         
         else {
@@ -168,7 +149,7 @@ public class AddLojaController {
                 }
 
                 else {
-                    AddLojaAlerts.codigoNaoExisteAlert();
+                    LojaAlerts.codigoNaoExisteAlert();
                 }
 
             } 

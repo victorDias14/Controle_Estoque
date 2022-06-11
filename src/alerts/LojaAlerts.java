@@ -2,10 +2,10 @@ package alerts;
 
 import javafx.scene.control.Alert;
 
-public class AddLojaAlerts {
+public class LojaAlerts {
 
     public static void lojaAdicionadaAlert() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Loja adicionada");
         alert.setHeaderText("Loja adicionada com sucesso.");
         alert.show();
@@ -14,7 +14,7 @@ public class AddLojaAlerts {
     public static void campoVazioLojaAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Campo vazio");
-        alert.setHeaderText("Nenhum campo pode ficar vazio.");
+        alert.setHeaderText("Preencha todos os campos.");
         alert.show();
     }
 
@@ -46,10 +46,17 @@ public class AddLojaAlerts {
         alert.show();
     }
 
-    public static void LojaApagadaAlert() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    public static void lojaApagadaAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Loja apagada");
         alert.setHeaderText("Loja apagada com sucesso.");
+        alert.show();
+    }
+
+    public static void lojaJaCadastradaAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Loja já cadastrada");
+        alert.setHeaderText("Loja já está cadastrada.");
         alert.show();
     }
     

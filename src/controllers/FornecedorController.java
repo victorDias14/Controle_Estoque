@@ -32,7 +32,7 @@ public class FornecedorController {
 
     @FXML
     void adicionar(ActionEvent event) {
-        if (txfCnpj.getText() == "") {
+        if (txfCnpj.getText().isBlank()) {
             FornecedorAlerts.fornecedorConsultaErrorAlert();
         }
 
