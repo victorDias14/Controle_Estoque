@@ -10,18 +10,11 @@ import model.dto.LojaDto;
 
 public class LojaDao {
 
-    private String codigoLoja;
-    private String nomeLoja;
-    private String cnpjLoja;
-    private String ruaLoja;
-    private String numeroLoja;
-    private String cepLoja;
-
     private Connection conn;
     private PreparedStatement st;
     private ResultSet rs;
 
-    public int verificaLojaExiste(LojaDto objLojaDto){
+    public int verificaLojaExiste(LojaDto objLojaDto) {
         String sqlConsultaExiste = DB.loadSql("verificaExisteLoja");
 
         try {
@@ -31,7 +24,7 @@ public class LojaDao {
 
             rs = st.executeQuery();
 
-            if(rs.isBeforeFirst()){
+            if (rs.isBeforeFirst()) {
                 return 0;
             }
 
@@ -40,15 +33,15 @@ public class LojaDao {
             }
         }
 
-        catch(SQLException e){
+        catch (SQLException e) {
             e.printStackTrace();
             return 2;
         }
     }
 
-    public int adiciona(LojaDto objLojaDto){
+    public int adiciona(LojaDto objLojaDto) {
         String sqlAdicionaLoja = DB.loadSql("insertLoja");
-        
+
         try {
             conn = DB.getConnection();
             st = conn.prepareStatement(sqlAdicionaLoja);
@@ -62,8 +55,24 @@ public class LojaDao {
             return 1;
         }
 
-        catch (SQLException e){
+        catch (SQLException e) {
             e.printStackTrace();
+            return 2;
+        }
+    }
+
+    public int apagar(LojaDto objLojaDto) {
+        String sqlDeleteLoja = DB.loadSql("deleteLoja");
+
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(sqlDeleteLoja);
+            st.setString(1, objLojaDto.getCodigoLoja());
+            st.executeUpdate();
+            return 1;
+        }
+
+        catch (Exception e) {
             return 2;
         }
     }

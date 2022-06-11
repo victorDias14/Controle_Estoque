@@ -59,5 +59,18 @@ public class LojaAlerts {
         alert.setHeaderText("Loja já está cadastrada.");
         alert.show();
     }
+
+    public static void lojaNaoCadastradaAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Loja não cadastrada");
+        alert.setHeaderText("Essa loja não está cadastrada.");
+        alert.show();
+    }
+
+    public static void erroGenerico() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro genérico");
+        alert.setHeaderText("Erro genérico");
+    }
     
 }

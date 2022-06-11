@@ -53,6 +53,8 @@ public class LojaController {
     private String numeroLoja;
     private String cepLoja;
 
+    private int retorno;
+
     @FXML
     void adicionar(ActionEvent event) {
         codigoLoja = txfCodigoLoja.getText();
@@ -88,7 +90,7 @@ public class LojaController {
             }
 
             else{
-
+                LojaAlerts.erroGenerico();
             }
         }
     }
@@ -97,28 +99,29 @@ public class LojaController {
     void apagar(ActionEvent event) {
         codigoLoja = txfCodigoLoja.getText();
 
-        if(codigoLoja == "") {
+        if(codigoLoja.isBlank()) {
             LojaAlerts.campoVazioLojaAlert();
         }
 
         else {
+            LojaDto objLojaDto = new LojaDto();
+            objLojaDto.setCodigoLoja(codigoLoja);
 
-            String sqlDeleteLoja = "DELETE FROM loja WHERE codigo = ?";
+            LojaBo objLojaBo = new LojaBo();
+            retorno = objLojaBo.apagar(objLojaDto);
 
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlDeleteLoja);
-                st.setString(1, codigoLoja);
-                st.executeUpdate();
+            if(retorno == 0){
+                LojaAlerts.lojaNaoCadastradaAlert();
+            }
 
+            else if(retorno == 1){
                 LojaAlerts.lojaApagadaAlert();
-            } 
-            
-            catch (Exception e) {
-                
+            }
+
+            else{
+                LojaAlerts.erroGenerico();
             }
         }
-
     }
         
     @FXML

@@ -1,16 +1,15 @@
 package model.bo;
 
-import java.beans.VetoableChangeListener;
-
-import alerts.LojaAlerts;
 import model.dao.LojaDao;
 import model.dto.LojaDto;
 
 public class LojaBo {
 
+    private int verificaExisteLoja;
+
     public int adicionar(LojaDto objLojaDto) {
         LojaDao objLojaDao = new LojaDao();
-        int verificaExisteLoja = objLojaDao.verificaLojaExiste(objLojaDto);
+        verificaExisteLoja = objLojaDao.verificaLojaExiste(objLojaDto);
 
         if (verificaExisteLoja == 0){
             return verificaExisteLoja;
@@ -23,6 +22,23 @@ public class LojaBo {
         else {
             return verificaExisteLoja;
         }
+    }
+
+    public int apagar(LojaDto objLojaDto){
+        LojaDao objLojaDao = new LojaDao();
+        verificaExisteLoja = objLojaDao.verificaLojaExiste(objLojaDto);
+
+        if (verificaExisteLoja == 0){
+            return objLojaDao.apagar(objLojaDto);
+        }
+
+        else if(verificaExisteLoja == 1){
+            return 0;
+        }
+
+        else {
+            return verificaExisteLoja;
+        }        
     }
     
 }
