@@ -9,13 +9,13 @@ public class LojaBo {
 
     public int adicionar(LojaDto objLojaDto) {
         LojaDao objLojaDao = new LojaDao();
-        verificaExisteLoja = objLojaDao.verificaLojaExiste(objLojaDto);
+        verificaExisteLoja = objLojaDao.verificaLojaExiste(objLojaDto, 0);
 
         if (verificaExisteLoja == 0){
             return verificaExisteLoja;
         }
 
-        else if(verificaExisteLoja == 1){
+        else if(verificaExisteLoja == 2){
             return objLojaDao.adiciona(objLojaDto);
         }
 
@@ -26,7 +26,7 @@ public class LojaBo {
 
     public int apagar(LojaDto objLojaDto){
         LojaDao objLojaDao = new LojaDao();
-        verificaExisteLoja = objLojaDao.verificaLojaExiste(objLojaDto);
+        verificaExisteLoja = objLojaDao.verificaLojaExiste(objLojaDto, 0);
 
         if (verificaExisteLoja == 0){
             return objLojaDao.apagar(objLojaDto);
@@ -39,6 +39,11 @@ public class LojaBo {
         else {
             return verificaExisteLoja;
         }        
+    }
+
+    public int consultar(LojaDto objLojaDto){
+        LojaDao objLojaDao = new LojaDao();
+        return objLojaDao.verificaLojaExiste(objLojaDto, 1);
     }
     
 }

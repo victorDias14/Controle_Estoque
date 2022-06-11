@@ -1,11 +1,6 @@
 package controllers;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 import alerts.LojaAlerts;
-import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,10 +36,6 @@ public class LojaController {
 
     @FXML
     private TextField txfRuaLoja;
-
-    private Connection conn;
-    private PreparedStatement st;
-    private ResultSet rs;
 
     private String codigoLoja;
     private String nomeLoja;
@@ -133,41 +124,37 @@ public class LojaController {
         }
         
         else {
-            String sqlConsultaLoja = "SELECT * FROM loja WHERE codigo = ?";
+            LojaDto objLojaDto = new LojaDto();
+            objLojaDto.setCodigoLoja(codigoLoja);
 
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlConsultaLoja);
-                st.setString(1, codigoLoja);
-                rs = st.executeQuery();
+            LojaBo objLojaBo = new LojaBo();
+            retorno = objLojaBo.consultar(objLojaDto);
 
-                if (rs.isBeforeFirst()) {
-                    while(rs.next()) {
-                        txfNomeLoja.setText(rs.getString("nome"));
-                        txfCnpjLoja.setText(rs.getString("cnpj"));
-                        txfRuaLoja.setText(rs.getString("rua"));
-                        txfNumeroLoja.setText(rs.getString("numero"));
-                        txfCepLoja.setText(rs.getString("cep"));
-                    }
-                }
+            if(retorno == 1){
+                txfNomeLoja.setText((objLojaDto.getNomeLoja()));
+                txfCnpjLoja.setText(objLojaDto.getCnpjLoja());
+                txfRuaLoja.setText(objLojaDto.getRuaLoja());
+                txfNumeroLoja.setText(objLojaDto.getNumeroLoja());
+                txfCepLoja.setText(objLojaDto.getCepLoja());
+            }
 
-                else {
-                    LojaAlerts.codigoNaoExisteAlert();
-                }
+            else if(retorno == 2){
+                LojaAlerts.lojaNaoCadastradaAlert();
+                txfNomeLoja.clear();
+                txfCnpjLoja.clear();
+                txfRuaLoja.clear();
+                txfNumeroLoja.clear();
+                txfCepLoja.clear();
+            }
 
-            } 
-            
-            catch (Exception e) {
-                e.printStackTrace();
+            else{
+                LojaAlerts.erroGenerico();
             }
         }
     }
 
     @FXML
     void voltar(ActionEvent event) {
-        DB.closeResultset(rs);
-        DB.closeStatement(st);
-        DB.closeConnection();
 
         App.changeScreen(Screens.TELA_INICIAL);
     }
