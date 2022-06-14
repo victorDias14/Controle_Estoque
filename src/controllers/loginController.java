@@ -1,5 +1,7 @@
 package controllers;
 
+import alerts.LoginAlerts;
+import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -25,12 +27,31 @@ public class LoginController {
         String usuario = username.getText();
         String senha = password.getText();
 
-        LoginDto objUsuarioDto = new LoginDto();
-        objUsuarioDto.setUsuario(usuario);
-        objUsuarioDto.setSenha(senha);
+        if(usuario.isBlank() || senha.isBlank()){
+            LoginAlerts.loginInformationAlert();
+        }
 
-        LoginBo objUsuarioBo = new LoginBo();
-        objUsuarioBo.verificaCamposVazios(objUsuarioDto);
+        else {
+            LoginDto objUsuarioDto = new LoginDto();
+            objUsuarioDto.setUsuario(usuario);
+            objUsuarioDto.setSenha(senha);
+
+            LoginBo objUsuarioBo = new LoginBo();
+            int consulta = objUsuarioBo.validaSenha(objUsuarioDto);
+
+            if(consulta == 0){
+                LoginAlerts.loginErrorAlert();
+            }
+
+            else if(consulta == 1){
+                App.changeScreen(Screens.TELA_INICIAL);
+            }
+
+            else {
+                LoginAlerts.loginErrorConsultAlert();
+            }
+            
+        }      
 
     }
 }

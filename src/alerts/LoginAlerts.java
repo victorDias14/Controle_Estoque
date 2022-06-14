@@ -16,4 +16,11 @@ public class LoginAlerts {
         alert.setHeaderText("Preencha os dois campos.");
         alert.show();        
     }
+
+    public static void loginErrorConsultAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Erro de login");
+        alert.setHeaderText("Preencha os dois campos.");
+        alert.show();        
+    }
 }

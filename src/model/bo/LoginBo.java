@@ -2,16 +2,14 @@ package model.bo;
 
 import java.security.MessageDigest;
 
-import alerts.LoginAlerts;
 import model.dao.LoginDao;
 import model.dto.LoginDto;
 
 public class LoginBo {
 
-    private String usuario;
     private String senha;
 
-    public void criptografaSenha(LoginDto objUsuarioDto) {
+    public int validaSenha(LoginDto objUsuarioDto) {
         senha = objUsuarioDto.getSenha();
 
         try {
@@ -26,25 +24,12 @@ public class LoginBo {
 
             objUsuarioDto.setSenha(hexString.toString());
             LoginDao loginDao = new LoginDao();
-            loginDao.validaUsuario(objUsuarioDto);
+            return loginDao.validaUsuario(objUsuarioDto);
         }
 
         catch(Exception e) {
             e.printStackTrace();
-
-        }
-    }
-
-    public void verificaCamposVazios(LoginDto objLoginDto){
-        usuario = objLoginDto.getUsuario();
-        senha = objLoginDto.getSenha();
-
-        if(usuario == "" || senha == "") {
-            LoginAlerts.loginInformationAlert();
-        }
-
-        else {
-            criptografaSenha(objLoginDto);
+            return 2;
         }
     }
     
