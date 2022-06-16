@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import db.DB;
+import enums.LoginEnums;
 import model.dto.LoginDto;
 
 public class LoginDao {
@@ -13,7 +14,7 @@ public class LoginDao {
     private PreparedStatement st;
     private ResultSet rs;
 
-    public int validaUsuario(LoginDto objUsuarioDto) {
+    public String validaUsuario(LoginDto objUsuarioDto) {
         String usuario = objUsuarioDto.getUsuario();
         String senha = objUsuarioDto.getSenha();
         String senhaCriptoBanco = null;
@@ -32,28 +33,24 @@ public class LoginDao {
                 }
 
                 if(senha.equals(senhaCriptoBanco)) {
-                    DB.closeResultset(rs);
-                    DB.closeStatement(st);
-                    DB.closeConnection();
+                    DB.closeAll(st, rs);
 
-                    return 1;                    
+                    return LoginEnums.VALIDADO.toString();                 
                 }
 
                 else {
-                    DB.closeResultset(rs);
-                    DB.closeStatement(st);
-                    DB.closeConnection();
-                    return 0;
+                    DB.closeAll(st, rs);
+                    return LoginEnums.NAO_VALIDADO.toString();
                 }
             }                           
         }
 
         catch (SQLException e) {
             e.printStackTrace();
-            return 2;
+            DB.closeAll(st, rs);
+            return LoginEnums.ERRO_GENERICO.toString();
         }
 
-        return 0;
-    }   
-    
+        return LoginEnums.ERRO_GENERICO.toString();
+    }     
 }

@@ -34,13 +34,13 @@ public class LoginController {
             objUsuarioDto.setSenha(password.getText());
 
             LoginBo objUsuarioBo = new LoginBo();
-            int consulta = objUsuarioBo.validaSenha(objUsuarioDto);
+            String consulta = objUsuarioBo.validaSenha(objUsuarioDto);
 
-            if(consulta == 0){
+            if(consulta == "NAO_VALIDADO"){
                 LoginAlerts.loginErrorAlert();
             }
 
-            else if(consulta == 1){
+            else if(consulta == "VALIDADO"){
                 App.changeScreen(Screens.TELA_INICIAL);
             }
 

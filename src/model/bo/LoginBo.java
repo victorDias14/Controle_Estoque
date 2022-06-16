@@ -2,6 +2,7 @@ package model.bo;
 
 import java.security.MessageDigest;
 
+import enums.LoginEnums;
 import model.dao.LoginDao;
 import model.dto.LoginDto;
 
@@ -9,7 +10,7 @@ public class LoginBo {
 
     private String senha;
 
-    public int validaSenha(LoginDto objUsuarioDto) {
+    public String validaSenha(LoginDto objUsuarioDto) {
         senha = objUsuarioDto.getSenha();
 
         try {
@@ -29,7 +30,7 @@ public class LoginBo {
 
         catch(Exception e) {
             e.printStackTrace();
-            return 2;
+            return LoginEnums.ERRO_GENERICO.toString();
         }
     }
     
