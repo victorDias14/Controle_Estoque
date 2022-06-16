@@ -24,17 +24,14 @@ public class LoginController {
     @FXML
     void fazerLogin(ActionEvent event) {
 
-        String usuario = username.getText();
-        String senha = password.getText();
-
-        if(usuario.isBlank() || senha.isBlank()){
+        if(username.getText().isBlank() || password.getText().isBlank()){
             LoginAlerts.loginInformationAlert();
         }
 
         else {
             LoginDto objUsuarioDto = new LoginDto();
-            objUsuarioDto.setUsuario(usuario);
-            objUsuarioDto.setSenha(senha);
+            objUsuarioDto.setUsuario(username.getText());
+            objUsuarioDto.setSenha(password.getText());
 
             LoginBo objUsuarioBo = new LoginBo();
             int consulta = objUsuarioBo.validaSenha(objUsuarioDto);

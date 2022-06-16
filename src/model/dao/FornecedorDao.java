@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import alerts.FornecedorAlerts;
 import db.DB;
+import enums.FornecedorEnums;
 import model.dto.FornecedorDto;
 
 public class FornecedorDao {
@@ -19,7 +20,7 @@ public class FornecedorDao {
 
     int retorno;
 
-    int verificaExiste(FornecedorDto objFornecedorDto) {
+    public String verificaExiste(FornecedorDto objFornecedorDto) {
         cnpj = objFornecedorDto.getCnpj();
 
         String sqlVerifica = DB.loadSql("verificaExisteFornecedor");
@@ -31,87 +32,69 @@ public class FornecedorDao {
             rs = st.executeQuery();
 
             if (rs.isBeforeFirst()) {
-                return 0;
+                DB.closeAll(st, rs);
+                return FornecedorEnums.JA_CADASTRADO.toString();
             }
 
             else {
-                return 1;
+                DB.closeAll(st, rs);
+                return FornecedorEnums.NAO_CADASTRADO.toString();
             }
         }
 
         catch (SQLException e) {
             e.printStackTrace();
-            return 2;
-        }
-
-    }
-
-    public void adicionar(FornecedorDto objFornecedorDto) {
-        retorno = verificaExiste(objFornecedorDto);
-
-        if (retorno == 0){
-            FornecedorAlerts.fornecedorExisteAlert();
-        }
-
-        else if (retorno == 1) {
-            nomeFornecedor = objFornecedorDto.getNomeFornecedor();
-            cnpj = objFornecedorDto.getCnpj();
-
-            String sqlInsertFornecedor = DB.loadSql("insertFornecedor");
-
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlInsertFornecedor);
-                st.setString(1, nomeFornecedor);
-                st.setLong(2, cnpj);
-                st.executeUpdate();
-
-                FornecedorAlerts.fornecedorAlert();
-            }
-
-            catch (SQLException e) {
-                e.printStackTrace();
-                FornecedorAlerts.fornecedorErroGenericoAlert();
-            }
-        }
-        
-        else {
-            FornecedorAlerts.fornecedorErroGenericoAlert();
+            DB.closeAll(st, rs);
+            return FornecedorEnums.ERRO_GENERICO.toString();
         }
     }
 
-    public void apagar(FornecedorDto objFornecedorDto) {
-        retorno = verificaExiste(objFornecedorDto);
+    public String adicionar(FornecedorDto objFornecedorDto) {
+        nomeFornecedor = objFornecedorDto.getNomeFornecedor();
+        cnpj = objFornecedorDto.getCnpj();
 
-        if (retorno == 0){
-            cnpj = objFornecedorDto.getCnpj();
-            String sqlInsertFornecedor = DB.loadSql("deleteFornecedor");
+        String sqlInsertFornecedor = DB.loadSql("insertFornecedor");
 
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlInsertFornecedor);
-                st.setLong(1, cnpj);
-                st.executeUpdate();
-    
-                FornecedorAlerts.apagaFornecedorAlert();
-            }
-    
-            catch (SQLException e) {
-                e.printStackTrace();
-                FornecedorAlerts.fornecedorErroGenericoAlert();
-            }
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(sqlInsertFornecedor);
+            st.setString(1, nomeFornecedor);
+            st.setLong(2, cnpj);
+            st.executeUpdate();
+
+            DB.closeAll(st, rs);
+            return FornecedorEnums.SUCESSO_CADASTRAR.toString();
         }
 
-        else if(retorno == 1){
-            FornecedorAlerts.fornecedorConsultaInformationAlert();
-        }
-
-        else {
-            FornecedorAlerts.fornecedorErroGenericoAlert();
+        catch (SQLException e) {
+            e.printStackTrace();
+            DB.closeAll(st, rs);
+            return FornecedorEnums.ERRO_GENERICO.toString();
         }
     }
 
-    public void consultar(FornecedorDto objFornecedorDto){
+    public String apagar(FornecedorDto objFornecedorDto) {
+
+        cnpj = objFornecedorDto.getCnpj();
+        String sqlInsertFornecedor = DB.loadSql("deleteFornecedor");
+
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(sqlInsertFornecedor);
+            st.setLong(1, cnpj);
+            st.executeUpdate();
+
+            DB.closeAll(st, rs);
+            return FornecedorEnums.SUCESSO_APAGAR.toString();
+        }
+
+        catch (SQLException e) {
+            e.printStackTrace();
+            return FornecedorEnums.ERRO_GENERICO.toString();
+        }
+    }
+
+    public void consultar(FornecedorDto objFornecedorDto) {
         cnpj = objFornecedorDto.getCnpj();
 
         String sqlVerifica = DB.loadSql("verificaExiste");
@@ -126,7 +109,7 @@ public class FornecedorDao {
                 while (rs.next()) {
                     objFornecedorDto.setNomeFornecedor(rs.getString("nome"));
                     objFornecedorDto.setCnpj(Long.parseLong(rs.getString("cnpj")));
-                }  
+                }
             }
 
             else {

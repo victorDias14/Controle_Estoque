@@ -78,7 +78,7 @@ public class DB {
         }
     }
 
-    public static void closeResultset(ResultSet rs ){
+    public static void closeResultset(ResultSet rs){
         if (rs != null) {
             try {
                 rs.close();
@@ -88,5 +88,11 @@ public class DB {
                 throw new DbException(e.getMessage());
             }
         }
+    }
+
+    public static void closeAll(Statement st, ResultSet rs){
+        closeResultset(rs);
+        closeStatement(st);
+        closeConnection();
     }
 }

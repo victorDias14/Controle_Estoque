@@ -1,27 +1,38 @@
 package model.bo;
 
-import alerts.FornecedorAlerts;
 import model.dao.FornecedorDao;
 import model.dto.FornecedorDto;
 
 public class FornecedorBo {
-    private String nomeFornecedor;
+
     FornecedorDao objFornecedorDao = new FornecedorDao();
 
-    public void adicionar(FornecedorDto objFornecedorDto){
-        nomeFornecedor = objFornecedorDto.getNomeFornecedor();
+    private String retornoVerificaExiste;
 
-        if (nomeFornecedor.isEmpty()) {
-            FornecedorAlerts.fornecedorAddErrorAlert();
+    public String adicionar(FornecedorDto objFornecedorDto){
+        retornoVerificaExiste = objFornecedorDao.verificaExiste(objFornecedorDto);
+
+        if(retornoVerificaExiste != "NAO_CADASTRADO"){
+            return retornoVerificaExiste;
         }
 
-        else {
-            objFornecedorDao.adicionar(objFornecedorDto);
-        }
+        else{
+            String retornoAdiciona = objFornecedorDao.adicionar(objFornecedorDto);
+            return retornoAdiciona;
+        }        
     }
     
-    public void apagar(FornecedorDto objFornecedorDto){
-        objFornecedorDao.apagar(objFornecedorDto);
+    public String apagar(FornecedorDto objFornecedorDto){
+        retornoVerificaExiste = objFornecedorDao.verificaExiste(objFornecedorDto);
+
+        if(retornoVerificaExiste == "JA_CADASTRADO"){
+            String retornoApagar = objFornecedorDao.apagar(objFornecedorDto);
+            return retornoApagar;
+        }
+
+        else{
+            return retornoVerificaExiste;
+        }        
     }
     
     public void consultar(FornecedorDto objDto){

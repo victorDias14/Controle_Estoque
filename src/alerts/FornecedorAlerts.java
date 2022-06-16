@@ -5,7 +5,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class FornecedorAlerts {
     public static void fornecedorAlert() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Fornecedor adicionado");
         alert.setHeaderText("Fornecedor adicionado com sucesso");
         alert.show();
@@ -18,10 +18,10 @@ public class FornecedorAlerts {
         alert.show();
     }
 
-    public static void fornecedorConsultaErrorAlert() {
+    public static void fornecedorDeleteErrorAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Campo não preenchido");
-        alert.setHeaderText("Preencha o campo de CNPJ.");
+        alert.setHeaderText("Preencha o CNPJ.");
         alert.show();
     }
 
@@ -33,7 +33,7 @@ public class FornecedorAlerts {
     }
 
     public static void apagaFornecedorAlert() {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Sucesso");
         alert.setHeaderText("Fornecedor apagado com sucesso.");
         alert.show();
@@ -50,6 +50,13 @@ public class FornecedorAlerts {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Erro");
         alert.setHeaderText("Erro genérico.");
+        alert.show();
+    }
+
+    public static void fornecedorCnpjErrorAlert() {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("CNPJ inválido.");
         alert.show();
     }
 }

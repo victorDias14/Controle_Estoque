@@ -1,10 +1,6 @@
 package controllers;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 import alerts.FornecedorAlerts;
-import db.DB;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,13 +23,15 @@ public class FornecedorController {
     private TextField txfNomeFornecedor;
 
     private String cnpj;
-    private PreparedStatement st;
-    private ResultSet rs;
 
     @FXML
     void adicionar(ActionEvent event) {
-        if (txfCnpj.getText().isBlank()) {
-            FornecedorAlerts.fornecedorConsultaErrorAlert();
+        if (txfNomeFornecedor.getText().isBlank() || txfCnpj.getText().isBlank()) {
+            FornecedorAlerts.fornecedorAddErrorAlert();
+        }
+
+        else if(txfCnpj.getText().length() != 14){
+            FornecedorAlerts.fornecedorCnpjErrorAlert();
         }
 
         else {
@@ -42,15 +40,31 @@ public class FornecedorController {
             objFornecedorDto.setNomeFornecedor(txfNomeFornecedor.getText());
 
             FornecedorBo objFornecedorBo = new FornecedorBo();
-            objFornecedorBo.adicionar(objFornecedorDto);
+            String retornoAdicionar = objFornecedorBo.adicionar(objFornecedorDto);
+
+            if(retornoAdicionar == "JA_CADASTRADO"){
+                FornecedorAlerts.fornecedorExisteAlert();
+            }
+
+            else if(retornoAdicionar == "ERRO_GENERICO"){
+                FornecedorAlerts.fornecedorErroGenericoAlert();
+            }
+
+            else{
+                FornecedorAlerts.fornecedorAlert();
+            }
         }
     }
 
     @FXML
     void apagar(ActionEvent event) {
 
-        if (cnpj == "") {
-            FornecedorAlerts.fornecedorConsultaErrorAlert();
+        if (txfCnpj.getText().isBlank()) {
+            FornecedorAlerts.fornecedorDeleteErrorAlert();
+        }
+
+        else if(txfCnpj.getText().length() != 14){
+            FornecedorAlerts.fornecedorCnpjErrorAlert();
         }
 
         else {
@@ -58,14 +72,26 @@ public class FornecedorController {
             objFornecedorDto.setCnpj(Long.parseLong(txfCnpj.getText()));
 
             FornecedorBo objFornecedorBo = new FornecedorBo();
-            objFornecedorBo.apagar(objFornecedorDto);
+            String retornoApagar = objFornecedorBo.apagar(objFornecedorDto);
+
+            if(retornoApagar == "SUCESSO_APAGAR"){
+                FornecedorAlerts.apagaFornecedorAlert();
+            }
+
+            else if(retornoApagar == "NAO_CADASTRADO"){
+                FornecedorAlerts.fornecedorConsultaInformationAlert();
+            }
+
+            else{
+                FornecedorAlerts.fornecedorErroGenericoAlert();
+            }
         }
     }
 
     @FXML
     void consultar(ActionEvent event) {
         if (cnpj == "") {
-            FornecedorAlerts.fornecedorConsultaErrorAlert();
+            FornecedorAlerts.fornecedorAddErrorAlert();
         }
 
         else {
@@ -80,14 +106,16 @@ public class FornecedorController {
 
     @FXML
     void voltar(ActionEvent event) {
+        limpaCampos();
         App.changeScreen(Screens.TELA_INICIAL);
-
-        DB.closeStatement(st);
-        DB.closeResultset(rs);
-        DB.closeConnection();
     }
 
     void preencheCamposConsulta(FornecedorDto objFornecedorDto) {
         txfNomeFornecedor.setText(objFornecedorDto.getNomeFornecedor()); 
+    }
+
+    void limpaCampos(){
+        txfCnpj.clear();
+        txfNomeFornecedor.clear();
     }
 }
