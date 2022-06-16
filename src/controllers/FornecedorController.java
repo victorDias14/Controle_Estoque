@@ -22,8 +22,6 @@ public class FornecedorController {
     @FXML
     private TextField txfNomeFornecedor;
 
-    private String cnpj;
-
     @FXML
     void adicionar(ActionEvent event) {
         if (txfNomeFornecedor.getText().isBlank() || txfCnpj.getText().isBlank()) {
@@ -90,8 +88,12 @@ public class FornecedorController {
 
     @FXML
     void consultar(ActionEvent event) {
-        if (cnpj == "") {
-            FornecedorAlerts.fornecedorAddErrorAlert();
+        if (txfCnpj.getText().isBlank()) {
+            FornecedorAlerts.fornecedorDeleteErrorAlert();
+        }
+
+        else if(txfCnpj.getText().length() != 14){
+            FornecedorAlerts.fornecedorCnpjErrorAlert();
         }
 
         else {
@@ -99,23 +101,26 @@ public class FornecedorController {
             objFornecedorDto.setCnpj(Long.parseLong(txfCnpj.getText()));
 
             FornecedorBo objFornecedorBo = new FornecedorBo();
-            objFornecedorBo.consultar(objFornecedorDto);
-            preencheCamposConsulta(objFornecedorDto);
+            String retornoConsulta = objFornecedorBo.consultar(objFornecedorDto);
+
+            if(retornoConsulta == "SUCESSO_CONSULTA"){
+                txfNomeFornecedor.setText(objFornecedorDto.getNomeFornecedor());
+            }
+
+            else if(retornoConsulta == "NAO_CADASTRADO"){
+                FornecedorAlerts.fornecedorConsultaInformationAlert();
+            }
+
+            else{
+                FornecedorAlerts.fornecedorErroGenericoAlert();
+            }
         }
     }
 
     @FXML
     void voltar(ActionEvent event) {
-        limpaCampos();
-        App.changeScreen(Screens.TELA_INICIAL);
-    }
-
-    void preencheCamposConsulta(FornecedorDto objFornecedorDto) {
-        txfNomeFornecedor.setText(objFornecedorDto.getNomeFornecedor()); 
-    }
-
-    void limpaCampos(){
         txfCnpj.clear();
         txfNomeFornecedor.clear();
+        App.changeScreen(Screens.TELA_INICIAL);
     }
 }

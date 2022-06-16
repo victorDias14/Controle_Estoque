@@ -1,5 +1,6 @@
 package model.bo;
 
+import enums.FornecedorEnums;
 import model.dao.FornecedorDao;
 import model.dto.FornecedorDto;
 
@@ -10,7 +11,7 @@ public class FornecedorBo {
     private String retornoVerificaExiste;
 
     public String adicionar(FornecedorDto objFornecedorDto){
-        retornoVerificaExiste = objFornecedorDao.verificaExiste(objFornecedorDto);
+        retornoVerificaExiste = objFornecedorDao.consultar(objFornecedorDto, FornecedorEnums.VERIFICA_EXISTE.toString());
 
         if(retornoVerificaExiste != "NAO_CADASTRADO"){
             return retornoVerificaExiste;
@@ -23,7 +24,7 @@ public class FornecedorBo {
     }
     
     public String apagar(FornecedorDto objFornecedorDto){
-        retornoVerificaExiste = objFornecedorDao.verificaExiste(objFornecedorDto);
+        retornoVerificaExiste = objFornecedorDao.consultar(objFornecedorDto, FornecedorEnums.VERIFICA_EXISTE.toString());
 
         if(retornoVerificaExiste == "JA_CADASTRADO"){
             String retornoApagar = objFornecedorDao.apagar(objFornecedorDto);
@@ -35,7 +36,7 @@ public class FornecedorBo {
         }        
     }
     
-    public void consultar(FornecedorDto objDto){
-        objFornecedorDao.consultar(objDto);
+    public String consultar(FornecedorDto objFornecedorDto){
+        return objFornecedorDao.consultar(objFornecedorDto, FornecedorEnums.CONSULTA.toString());
     }
 }

@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import alerts.FornecedorAlerts;
 import db.DB;
 import enums.FornecedorEnums;
 import model.dto.FornecedorDto;
@@ -18,9 +17,7 @@ public class FornecedorDao {
     private PreparedStatement st;
     private ResultSet rs;
 
-    int retorno;
-
-    public String verificaExiste(FornecedorDto objFornecedorDto) {
+    public String consultar(FornecedorDto objFornecedorDto, String tipoConsulta) {
         cnpj = objFornecedorDto.getCnpj();
 
         String sqlVerifica = DB.loadSql("verificaExisteFornecedor");
@@ -31,9 +28,18 @@ public class FornecedorDao {
             st.setLong(1, cnpj);
             rs = st.executeQuery();
 
-            if (rs.isBeforeFirst()) {
+            if (rs.isBeforeFirst() && tipoConsulta == "VERIFICA_EXISTE") {
                 DB.closeAll(st, rs);
                 return FornecedorEnums.JA_CADASTRADO.toString();
+            }
+
+            else if(rs.isBeforeFirst() && tipoConsulta == "CONSULTA"){
+                while(rs.next()){
+                    objFornecedorDto.setNomeFornecedor(rs.getString("nome"));                    
+                }
+
+                DB.closeAll(st, rs);
+                return FornecedorEnums.SUCESSO_CONSULTA.toString();
             }
 
             else {
@@ -91,35 +97,6 @@ public class FornecedorDao {
         catch (SQLException e) {
             e.printStackTrace();
             return FornecedorEnums.ERRO_GENERICO.toString();
-        }
-    }
-
-    public void consultar(FornecedorDto objFornecedorDto) {
-        cnpj = objFornecedorDto.getCnpj();
-
-        String sqlVerifica = DB.loadSql("verificaExiste");
-
-        try {
-            conn = DB.getConnection();
-            st = conn.prepareStatement(sqlVerifica);
-            st.setLong(1, cnpj);
-            rs = st.executeQuery();
-
-            if (rs.isBeforeFirst()) {
-                while (rs.next()) {
-                    objFornecedorDto.setNomeFornecedor(rs.getString("nome"));
-                    objFornecedorDto.setCnpj(Long.parseLong(rs.getString("cnpj")));
-                }
-            }
-
-            else {
-                FornecedorAlerts.fornecedorConsultaInformationAlert();
-            }
-        }
-
-        catch (SQLException e) {
-            e.printStackTrace();
-            FornecedorAlerts.fornecedorErroGenericoAlert();
         }
     }
 }
