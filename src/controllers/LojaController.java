@@ -1,6 +1,10 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import alerts.LojaAlerts;
+import enums.LojaEnums;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,100 +41,104 @@ public class LojaController {
     @FXML
     private TextField txfRuaLoja;
 
-    private String codigoLoja;
-    private String nomeLoja;
-    private String cnpjLoja;
-    private String ruaLoja;
-    private String numeroLoja;
-    private String cepLoja;
-
-    private int retorno;
-
     @FXML
     void adicionar(ActionEvent event) {
-        codigoLoja = txfCodigoLoja.getText();
-        nomeLoja = txfNomeLoja.getText();
-        cnpjLoja = txfCnpjLoja.getText();
-        ruaLoja = txfRuaLoja.getText();
-        numeroLoja = txfNumeroLoja.getText();
-        cepLoja = txfCepLoja.getText();
 
-        if (codigoLoja.isBlank() || nomeLoja.isBlank() || cnpjLoja.isBlank() || ruaLoja.isBlank() || numeroLoja.isBlank() || cepLoja.isBlank()) {
-            LojaAlerts.campoVazioLojaAlert();
+        List<String> infos = new ArrayList<String>();
+        infos.add(txfCodigoLoja.getText());
+        infos.add(txfNomeLoja.getText());
+        infos.add(txfCnpjLoja.getText());
+        infos.add(txfRuaLoja.getText());
+        infos.add(txfNumeroLoja.getText());
+        infos.add(txfCepLoja.getText());
+
+        int v = 1;
+
+        if(infos.get(2).length() != 14){
+            LojaAlerts.cnpjInvalido();
         }
 
-        else {
-            
-            LojaDto objLojaDto = new LojaDto();
-            objLojaDto.setCodigoLoja(codigoLoja);
-            objLojaDto.setNomeLoja(nomeLoja);
-            objLojaDto.setCnpjLoja(cnpjLoja);
-            objLojaDto.setRuaLoja(ruaLoja);
-            objLojaDto.setNumeroLoja(numeroLoja);
-            objLojaDto.setCepLoja(cepLoja);
+        else{
 
-            LojaBo objLojaBo = new LojaBo(); 
-            int retorno = objLojaBo.adicionar(objLojaDto);
+            for(String i : infos){
+                if(i.isBlank()){
+                    v = 0;
+                    break;
+                }
+            }            
 
-            if(retorno == 0){
-                LojaAlerts.lojaJaCadastradaAlert();
-            }
+            if(v == 1){
+                LojaDto objLojaDto = new LojaDto();
+                objLojaDto.setCodigoLoja(infos.get(0));
+                objLojaDto.setNomeLoja(infos.get(1));
+                objLojaDto.setCnpjLoja(infos.get(2));
+                objLojaDto.setRuaLoja(infos.get(3));
+                objLojaDto.setNumeroLoja(infos.get(4));
+                objLojaDto.setCepLoja(infos.get(5));
 
-            else if(retorno == 1){
-                LojaAlerts.lojaAdicionadaAlert();
+                LojaBo objLojaBo = new LojaBo(); 
+                String retornoAdd = objLojaBo.adicionar(objLojaDto);
+
+                if(retornoAdd == "JA_CADASTRADA"){
+                    LojaAlerts.lojaJaCadastradaAlert();
+                }
+    
+                else if(retornoAdd == "SUCESSO_CADASTRO"){
+                    LojaAlerts.lojaAdicionadaAlert();
+                }
+    
+                else{
+                    LojaAlerts.erroGenerico();
+                }
             }
 
             else{
-                LojaAlerts.erroGenerico();
-            }
-        }
+                LojaAlerts.campoVazioLojaAlert();
+            }           
+        }           
     }
 
     @FXML
     void apagar(ActionEvent event) {
-        codigoLoja = txfCodigoLoja.getText();
-
-        if(codigoLoja.isBlank()) {
-            LojaAlerts.campoVazioLojaAlert();
+        if (txfCodigoLoja.getText().isBlank()) {
+            LojaAlerts.informarCodigo();
         }
 
         else {
             LojaDto objLojaDto = new LojaDto();
-            objLojaDto.setCodigoLoja(codigoLoja);
+            objLojaDto.setCodigoLoja(txfCodigoLoja.getText());
 
             LojaBo objLojaBo = new LojaBo();
-            retorno = objLojaBo.apagar(objLojaDto);
+            String retornoDel = objLojaBo.apagar(objLojaDto);
 
-            if(retorno == 0){
+            if (retornoDel == LojaEnums.NAO_CADASTRADA.toString()) {
                 LojaAlerts.lojaNaoCadastradaAlert();
             }
 
-            else if(retorno == 1){
+            else if (retornoDel == LojaEnums.LOJA_APAGADA.toString()) {
                 LojaAlerts.lojaApagadaAlert();
             }
 
-            else{
+            else {
                 LojaAlerts.erroGenerico();
             }
         }
     }
-        
+
     @FXML
     void consultar(ActionEvent event) {
-        codigoLoja = txfCodigoLoja.getText();
-
-        if (codigoLoja.isBlank()) {
-            LojaAlerts.campoVazioLojaAlert();
+        if (txfCodigoLoja.getText().isBlank()) {
+            LojaAlerts.informarCodigo();
         }
-        
+
         else {
             LojaDto objLojaDto = new LojaDto();
-            objLojaDto.setCodigoLoja(codigoLoja);
+            objLojaDto.setCodigoLoja(txfCodigoLoja.getText());
 
             LojaBo objLojaBo = new LojaBo();
-            retorno = objLojaBo.consultar(objLojaDto);
+            String consulta = objLojaBo.consultar(objLojaDto);
 
-            if(retorno == 1){
+            if (consulta == LojaEnums.CONSULTADA.toString()) {
                 txfNomeLoja.setText((objLojaDto.getNomeLoja()));
                 txfCnpjLoja.setText(objLojaDto.getCnpjLoja());
                 txfRuaLoja.setText(objLojaDto.getRuaLoja());
@@ -138,7 +146,7 @@ public class LojaController {
                 txfCepLoja.setText(objLojaDto.getCepLoja());
             }
 
-            else if(retorno == 2){
+            else if (consulta == LojaEnums.NAO_CADASTRADA.toString()) {
                 LojaAlerts.lojaNaoCadastradaAlert();
                 txfNomeLoja.clear();
                 txfCnpjLoja.clear();
@@ -147,7 +155,7 @@ public class LojaController {
                 txfCepLoja.clear();
             }
 
-            else{
+            else {
                 LojaAlerts.erroGenerico();
             }
         }
@@ -155,7 +163,6 @@ public class LojaController {
 
     @FXML
     void voltar(ActionEvent event) {
-
         App.changeScreen(Screens.TELA_INICIAL);
     }
 }

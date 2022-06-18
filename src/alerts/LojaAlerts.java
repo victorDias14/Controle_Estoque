@@ -71,6 +71,21 @@ public class LojaAlerts {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro genérico");
         alert.setHeaderText("Erro genérico");
+        alert.show();
+    }
+
+    public static void cnpjInvalido() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro");
+        alert.setHeaderText("CNPJ inválido");
+        alert.show();
+    }
+
+    public static void informarCodigo() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Erro");
+        alert.setHeaderText("Informe o código da loja");
+        alert.show();
     }
     
 }

@@ -1,21 +1,22 @@
 package model.bo;
 
+import enums.LojaEnums;
 import model.dao.LojaDao;
 import model.dto.LojaDto;
 
 public class LojaBo {
 
-    private int verificaExisteLoja;
+    private String verificaExisteLoja;
 
-    public int adicionar(LojaDto objLojaDto) {
+    public String adicionar(LojaDto objLojaDto) {
         LojaDao objLojaDao = new LojaDao();
-        verificaExisteLoja = objLojaDao.verificaLojaExiste(objLojaDto, 0);
+        verificaExisteLoja = objLojaDao.consulta(objLojaDto, LojaEnums.VERIFICA_EXISTE.toString());
 
-        if (verificaExisteLoja == 0){
+        if (verificaExisteLoja == LojaEnums.JA_CADASTRADA.toString()){
             return verificaExisteLoja;
         }
 
-        else if(verificaExisteLoja == 2){
+        else if(verificaExisteLoja == LojaEnums.NAO_CADASTRADA.toString()){
             return objLojaDao.adiciona(objLojaDto);
         }
 
@@ -24,26 +25,22 @@ public class LojaBo {
         }
     }
 
-    public int apagar(LojaDto objLojaDto){
+    public String apagar(LojaDto objLojaDto){
         LojaDao objLojaDao = new LojaDao();
-        verificaExisteLoja = objLojaDao.verificaLojaExiste(objLojaDto, 0);
+        String apagar = objLojaDao.consulta(objLojaDto, LojaEnums.VERIFICA_EXISTE.toString());
 
-        if (verificaExisteLoja == 0){
+        if (apagar == LojaEnums.JA_CADASTRADA.toString()){
             return objLojaDao.apagar(objLojaDto);
         }
 
-        else if(verificaExisteLoja == 1){
-            return 0;
-        }
-
         else {
-            return verificaExisteLoja;
+            return apagar;
         }        
     }
 
-    public int consultar(LojaDto objLojaDto){
+    public String consultar(LojaDto objLojaDto){
         LojaDao objLojaDao = new LojaDao();
-        return objLojaDao.verificaLojaExiste(objLojaDto, 1);
+        return objLojaDao.consulta(objLojaDto, LojaEnums.CONSULTA.toString());
     }
     
 }
