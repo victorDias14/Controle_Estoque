@@ -1,34 +1,35 @@
 package model.bo;
 
+import enums.SetorEnums;
 import model.dao.SetorDao;
 import model.dto.SetorDto;
 
 public class SetorBo {
     
-    public int adicionarSetor(SetorDto objSetorDto){
+    public SetorEnums adicionarSetor(SetorDto objSetorDto){
         SetorDao objSetorDao = new SetorDao();
-        int setorExiste = objSetorDao.verificaExisteSetor(objSetorDto);
+        SetorEnums setorExiste = objSetorDao.consulta(objSetorDto);
 
-        if(setorExiste == 0 || setorExiste == 2){
+        if(setorExiste == SetorEnums.JA_CADASTRADO || setorExiste == SetorEnums.ERRO_GENERICO){
             return setorExiste;
         }
         
         else{
-            int retornoAddSetor = objSetorDao.adicionarSetor(objSetorDto);
+            SetorEnums retornoAddSetor = objSetorDao.adicionarSetor(objSetorDto);
             return retornoAddSetor;
         }
     }
 
-    public int apagarSetor(SetorDto objSetorDto){
+    public SetorEnums apagarSetor(SetorDto objSetorDto){
         SetorDao objSetorDao = new SetorDao();
-        int setorExiste = objSetorDao.verificaExisteSetor(objSetorDto);
+        SetorEnums setorExiste = objSetorDao.consulta(objSetorDto);
 
-        if(setorExiste == 1 || setorExiste == 2){
+        if(setorExiste == SetorEnums.NAO_CADASTRADO || setorExiste == SetorEnums.ERRO_GENERICO){
             return setorExiste;
         }
         
         else{
-            int retornoDelSetor = objSetorDao.apagarSetor(objSetorDto);
+            SetorEnums retornoDelSetor = objSetorDao.apagarSetor(objSetorDto);
             return retornoDelSetor;
         }
     }

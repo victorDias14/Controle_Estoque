@@ -2,6 +2,7 @@ package controllers;
 
 import alerts.SetorAlerts;
 import enums.Screens;
+import enums.SetorEnums;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,34 +24,33 @@ public class SetorController {
     @FXML
     private TextField txfSetor;
 
-    private String nomeSetor;
-
     @FXML
     void confirmar(ActionEvent event) {
-        nomeSetor = txfSetor.getText();
-
-        if (nomeSetor == "") {
+        if (txfSetor.getText().isBlank()) {
             SetorAlerts.addSetorErrorAlert();
         }
 
         else {
             SetorDto objSetorDto = new SetorDto();
-            objSetorDto.setNomeSetor(nomeSetor);
+            objSetorDto.setNomeSetor(txfSetor.getText());
 
             SetorBo objSetorBo = new SetorBo();
-            int retornoAddSetor = objSetorBo.adicionarSetor(objSetorDto);
+            SetorEnums retornoAddSetor = objSetorBo.adicionarSetor(objSetorDto);
 
             switch(retornoAddSetor){
-                case 0:
+                case JA_CADASTRADO:
                     SetorAlerts.setorExisteErrorAlert();
                     break;
 
-                case 1:
+                case SUCESSO_CADASTRO:
                     SetorAlerts.addSetorConfirmationAlert();
                     break;
 
-                case 2:
+                case ERRO_GENERICO:
                     SetorAlerts.setorGenericErrorAlert();
+                    break;
+
+                default:
                     break;
             }
         }
@@ -58,30 +58,31 @@ public class SetorController {
 
     @FXML
     void apagar(ActionEvent event) {
-        nomeSetor = txfSetor.getText();
-
-        if (nomeSetor == "") {
+        if (txfSetor.getText().isBlank()) {
             SetorAlerts.addSetorErrorAlert();
         }
 
         else {
             SetorDto objSetorDto = new SetorDto();
-            objSetorDto.setNomeSetor(nomeSetor);
+            objSetorDto.setNomeSetor(txfSetor.getText());
 
             SetorBo objSetorBo = new SetorBo();
-            int retornoDelSetor = objSetorBo.apagarSetor(objSetorDto);
+            SetorEnums retornoDelSetor = objSetorBo.apagarSetor(objSetorDto);
 
             switch(retornoDelSetor){
-                case 0:
+                case SUCESSO_APAGAR:
                     SetorAlerts.deleteSetorConfirmationAlert();
                     break;
 
-                case 1:
+                case NAO_CADASTRADO:
                     SetorAlerts.setorNaoExisteErrorAlert();
                     break;
 
-                case 2:
+                case ERRO_GENERICO:
                     SetorAlerts.setorGenericErrorAlert();
+                    break;
+
+                default:
                     break;
             }
         }

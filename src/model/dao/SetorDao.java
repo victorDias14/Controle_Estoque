@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import db.DB;
+import enums.SetorEnums;
 import model.dto.SetorDto;
 
 public class SetorDao {
@@ -15,7 +16,7 @@ public class SetorDao {
     private PreparedStatement st;
     private ResultSet rs;
     
-    public int adicionarSetor(SetorDto objSetorDto){
+    public SetorEnums adicionarSetor(SetorDto objSetorDto){
         nomeSetor = objSetorDto.getNomeSetor();
 
         String sqlAddSetor = DB.loadSql("insertSetor");
@@ -25,16 +26,18 @@ public class SetorDao {
             st = conn.prepareStatement(sqlAddSetor);
             st.setString(1, nomeSetor);
             st.executeUpdate();
-            return 1;
+            DB.closeAll(st, rs);
+            return SetorEnums.SUCESSO_CADASTRO;
         } 
         
         catch (SQLException e) {
             e.printStackTrace();
-            return 2;
+            DB.closeAll(st, rs);
+            return SetorEnums.ERRO_GENERICO;
         }
     }
 
-    public int apagarSetor(SetorDto objSetorDto){
+    public SetorEnums apagarSetor(SetorDto objSetorDto){
         nomeSetor = objSetorDto.getNomeSetor();
 
         String sqlDelSetor = DB.loadSql("deleteSetor");
@@ -44,16 +47,18 @@ public class SetorDao {
             st = conn.prepareStatement(sqlDelSetor);
             st.setString(1, nomeSetor);
             st.executeUpdate();
-            return 0;
+            DB.closeAll(st, rs);
+            return SetorEnums.SUCESSO_APAGAR;
         } 
         
         catch (SQLException e) {
             e.printStackTrace();
-            return 2;
+            DB.closeAll(st, rs);
+            return SetorEnums.ERRO_GENERICO;
         }
     }
 
-    public int verificaExisteSetor(SetorDto objSetorDto){
+    public SetorEnums consulta(SetorDto objSetorDto){
         nomeSetor = objSetorDto.getNomeSetor();
 
         String sqlVerificaExiste = DB.loadSql("verificaExisteSetor");
@@ -65,17 +70,20 @@ public class SetorDao {
             rs = st.executeQuery();
 
             if(rs.isBeforeFirst()){
-                return 0;
+                DB.closeAll(st, rs);
+                return SetorEnums.JA_CADASTRADO;
             }
 
             else {
-                return 1;
+                DB.closeAll(st, rs);
+                return SetorEnums.NAO_CADASTRADO;
             }
         } 
         
         catch (SQLException e) {
             e.printStackTrace();
-            return 2;
+            DB.closeAll(st, rs);
+            return SetorEnums.ERRO_GENERICO;
         }
     }
 }
