@@ -2,20 +2,40 @@ package model.bo;
 
 import java.security.MessageDigest;
 
+import enums.UsuarioEnums;
 import model.dao.UsuarioDao;
 import model.dto.UsuarioDto;
 
 public class UsuarioBo {
-    UsuarioDao objUsuarioDao = new UsuarioDao();
+
+    private UsuarioEnums consulta;
     
-    public void adiciona(UsuarioDto objUsuarioDto){
-        String retorno = criptografia(objUsuarioDto.getSenhaUsuario());
-        objUsuarioDto.setSenhaUsuario(retorno);
-        objUsuarioDao.adiciona(objUsuarioDto);
+    public UsuarioEnums adiciona(UsuarioDto objUsuarioDto){
+        UsuarioDao objUsuarioDao = new UsuarioDao();
+        consulta = objUsuarioDao.consulta(objUsuarioDto);
+
+        if(consulta == UsuarioEnums.NAO_CADASTRADO){
+            String retorno = criptografia(objUsuarioDto.getSenhaUsuario());
+            objUsuarioDto.setSenhaUsuario(retorno);
+            return objUsuarioDao.adiciona(objUsuarioDto);
+        }
+
+        else{
+            return consulta;
+        }       
     }
 
-    public void apaga(UsuarioDto objUsuarioDto){
-        objUsuarioDao.apaga(objUsuarioDto);
+    public UsuarioEnums apaga(UsuarioDto objUsuarioDto){
+        UsuarioDao objUsuarioDao = new UsuarioDao();
+        consulta = objUsuarioDao.consulta(objUsuarioDto);
+
+        if(consulta == UsuarioEnums.JA_CADASTRADO){
+            return objUsuarioDao.apaga(objUsuarioDto);
+        }
+
+        else{
+            return consulta;
+        }
     }
 
     String criptografia(String senha) {

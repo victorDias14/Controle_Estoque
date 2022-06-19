@@ -2,6 +2,7 @@ package controllers;
 
 import alerts.UsuarioAlerts;
 import enums.Screens;
+import enums.UsuarioEnums;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,48 +21,71 @@ public class UsuarioController {
     private TextField txfCodigoUsuario;
 
     @FXML
-    private TextField txfNomeUsuario;
-
-    @FXML
     private TextField txfSenhaUsuario;
-
-    private String codigoUsuario;
-    private String senhaUsuario;
 
     @FXML
     void confirmar(ActionEvent event) {
-        UsuarioDto objUsuarioDto = new UsuarioDto();
 
-        codigoUsuario = txfCodigoUsuario.getText();
-        senhaUsuario = txfSenhaUsuario.getText();
-
-        if (codigoUsuario == "" || senhaUsuario == "") {
+        if (txfCodigoUsuario.getText().isBlank() || txfSenhaUsuario.getText().isBlank()) {
             UsuarioAlerts.criarUsuarioErrorAlert();
         }
 
         else {
-            objUsuarioDto.setCodigoUsuario(codigoUsuario);
-            objUsuarioDto.setSenhaUsuario(senhaUsuario);
+            UsuarioDto objUsuarioDto = new UsuarioDto();
+            objUsuarioDto.setCodigoUsuario(txfCodigoUsuario.getText());
+            objUsuarioDto.setSenhaUsuario(txfSenhaUsuario.getText());
 
             UsuarioBo objUsuarioBo = new UsuarioBo();
-            objUsuarioBo.adiciona(objUsuarioDto);
+            UsuarioEnums retornoAdd = objUsuarioBo.adiciona(objUsuarioDto);
+
+            switch(retornoAdd){
+                case JA_CADASTRADO:
+                    UsuarioAlerts.usuarioExisteAlert();
+                    break;
+
+                case SUCESSO_CADASTRO:
+                    UsuarioAlerts.criarUsuarioConfirmationAlert();
+                    break;
+
+                case ERRO_GENERICO:
+                    UsuarioAlerts.usuarioGenericAlert();
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 
     @FXML
     void apagar(ActionEvent event) {
-        codigoUsuario = txfCodigoUsuario.getText();
-
-        if (codigoUsuario == "") {
+        if (txfCodigoUsuario.getText().isBlank()) {
             UsuarioAlerts.apagarUsuarioErrorAlert();
         }
 
         else {
             UsuarioDto objUsuarioDto = new UsuarioDto();
-            objUsuarioDto.setCodigoUsuario(codigoUsuario);
+            objUsuarioDto.setCodigoUsuario(txfCodigoUsuario.getText());
 
             UsuarioBo objUsuarioBo = new UsuarioBo();
-            objUsuarioBo.apaga(objUsuarioDto);           
+            UsuarioEnums retornoDel = objUsuarioBo.apaga(objUsuarioDto);
+            
+            switch(retornoDel){
+                case SUCESSO_APAGAR:
+                    UsuarioAlerts.apagarUsuarioConfirmationAlert();
+                    break;
+
+                case NAO_CADASTRADO:
+                    UsuarioAlerts.apagarUsuarioInexistenteErrorAlert();
+                    break;
+
+                case ERRO_GENERICO:
+                    UsuarioAlerts.usuarioGenericAlert();
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 

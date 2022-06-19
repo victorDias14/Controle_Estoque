@@ -5,121 +5,79 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import alerts.UsuarioAlerts;
 import db.DB;
+import enums.UsuarioEnums;
 import model.dto.UsuarioDto;
 
 public class UsuarioDao {
-
-    private String usuario;
-    private String senha;
 
     private Connection conn;
     private PreparedStatement st;
     private ResultSet rs;
 
-    int retorno;
-    
-    public void adiciona(UsuarioDto objUsuarioDto){
-        usuario = objUsuarioDto.getCodigoUsuario();
+    public UsuarioEnums adiciona(UsuarioDto objUsuarioDto) {
+        String sqlInsertUsuario = DB.loadSql("insertUsuario");
 
-        retorno = verificaExiste(usuario);
-
-        if(retorno == 0){
-            UsuarioAlerts.usuarioExisteAlert();
+        try {
+            conn = DB.getConnection();
+            st = conn.prepareStatement(sqlInsertUsuario);
+            st.setString(1, objUsuarioDto.getCodigoUsuario());
+            st.setString(2, objUsuarioDto.getSenhaUsuario());
+            st.executeUpdate();
+            DB.closeAll(st, rs);
+            return UsuarioEnums.SUCESSO_CADASTRO;
         }
 
-        else if(retorno == 1){
-            senha = objUsuarioDto.getSenhaUsuario();
-
-            String sqlInsertUsuario = DB.loadSql("insertUsuario");
-
-            try { 
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlInsertUsuario);
-                st.setString(1, usuario);
-                st.setString(2, senha);
-                st.executeUpdate();
-                
-                UsuarioAlerts.criarUsuarioConfirmationAlert();
-                fechaConexao();
-            }
-
-            catch (SQLException e) {
-                e.printStackTrace();
-                UsuarioAlerts.usuarioGenericAlert();
-                fechaConexao();
-            }
-        } 
-        
-        else {
-            UsuarioAlerts.usuarioGenericAlert();
-            fechaConexao();
+        catch (SQLException e) {
+            e.printStackTrace();
+            DB.closeAll(st, rs);
+            return UsuarioEnums.ERRO_GENERICO;
         }
     }
 
-    public void apaga(UsuarioDto objUsuarioDto){
-        usuario = objUsuarioDto.getCodigoUsuario();
+    public UsuarioEnums apaga(UsuarioDto objUsuarioDto) {
 
-        retorno = verificaExiste(usuario);
-
-        if(retorno == 0){
+        try {
             String sqlDeleteUsuario = DB.loadSql("deleteUsuario");
-
-            try {
-                conn = DB.getConnection();
-                st = conn.prepareStatement(sqlDeleteUsuario);
-                st.setString(1, usuario);
-                st.executeUpdate();
-
-                UsuarioAlerts.apagarUsuarioConfirmationAlert();
-                fechaConexao();
-            }
-
-            catch (SQLException e) {
-                e.printStackTrace();
-                UsuarioAlerts.usuarioGenericAlert();
-                fechaConexao();
-            }
+            conn = DB.getConnection();
+            st = conn.prepareStatement(sqlDeleteUsuario);
+            st.setString(1, objUsuarioDto.getCodigoUsuario());
+            st.executeUpdate();
+            DB.closeAll(st, rs);
+            return UsuarioEnums.SUCESSO_APAGAR;
         }
 
-        else if(retorno == 1){
-            UsuarioAlerts.apagarUsuarioInexistenteErrorAlert();
-        }
-
-        else {
-            UsuarioAlerts.usuarioGenericAlert();
+        catch (SQLException e) {
+            e.printStackTrace();
+            DB.closeAll(st, rs);
+            return UsuarioEnums.ERRO_GENERICO;
         }
     }
 
-    int verificaExiste(String usuario) {
+    public UsuarioEnums consulta(UsuarioDto objUsuarioDto) {
         String sqlVerifica = DB.loadSql("verificaExisteUsuario");
 
         try {
             conn = DB.getConnection();
             st = conn.prepareStatement(sqlVerifica);
-            st.setString(1, usuario);
+            st.setString(1, objUsuarioDto.getCodigoUsuario());
             rs = st.executeQuery();
 
             if (rs.isBeforeFirst()) {
-                return 0;
+                DB.closeAll(st, rs);
+                return UsuarioEnums.JA_CADASTRADO;
             }
 
             else {
-                return 1;
+                DB.closeAll(st, rs);
+                return UsuarioEnums.NAO_CADASTRADO;
             }
         }
 
         catch (SQLException e) {
             e.printStackTrace();
-            return 2;
+            DB.closeAll(st, rs);
+            return UsuarioEnums.ERRO_GENERICO;
         }
-
-    }
-
-    void fechaConexao(){
-        DB.closeStatement(st);
-        DB.closeResultset(rs);
-        DB.closeConnection();
     }
 }
