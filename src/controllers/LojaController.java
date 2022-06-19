@@ -59,7 +59,6 @@ public class LojaController {
         }
 
         else{
-
             for(String i : infos){
                 if(i.isBlank()){
                     v = 0;
@@ -77,13 +76,13 @@ public class LojaController {
                 objLojaDto.setCepLoja(infos.get(5));
 
                 LojaBo objLojaBo = new LojaBo(); 
-                String retornoAdd = objLojaBo.adicionar(objLojaDto);
+                LojaEnums retornoAdd = objLojaBo.adicionar(objLojaDto);
 
-                if(retornoAdd == "JA_CADASTRADA"){
+                if(retornoAdd == LojaEnums.JA_CADASTRADA){
                     LojaAlerts.lojaJaCadastradaAlert();
                 }
     
-                else if(retornoAdd == "SUCESSO_CADASTRO"){
+                else if(retornoAdd == LojaEnums.SUCESSO_CADASTRO){
                     LojaAlerts.lojaAdicionadaAlert();
                 }
     
@@ -109,13 +108,13 @@ public class LojaController {
             objLojaDto.setCodigoLoja(txfCodigoLoja.getText());
 
             LojaBo objLojaBo = new LojaBo();
-            String retornoDel = objLojaBo.apagar(objLojaDto);
+            LojaEnums retornoDel = objLojaBo.apagar(objLojaDto);
 
-            if (retornoDel == LojaEnums.NAO_CADASTRADA.toString()) {
+            if (retornoDel == LojaEnums.NAO_CADASTRADA) {
                 LojaAlerts.lojaNaoCadastradaAlert();
             }
 
-            else if (retornoDel == LojaEnums.LOJA_APAGADA.toString()) {
+            else if (retornoDel == LojaEnums.LOJA_APAGADA) {
                 LojaAlerts.lojaApagadaAlert();
             }
 
@@ -136,9 +135,9 @@ public class LojaController {
             objLojaDto.setCodigoLoja(txfCodigoLoja.getText());
 
             LojaBo objLojaBo = new LojaBo();
-            String consulta = objLojaBo.consultar(objLojaDto);
+            LojaEnums consulta = objLojaBo.consultar(objLojaDto);
 
-            if (consulta == LojaEnums.CONSULTADA.toString()) {
+            if (consulta == LojaEnums.CONSULTADA) {
                 txfNomeLoja.setText((objLojaDto.getNomeLoja()));
                 txfCnpjLoja.setText(objLojaDto.getCnpjLoja());
                 txfRuaLoja.setText(objLojaDto.getRuaLoja());
@@ -146,7 +145,7 @@ public class LojaController {
                 txfCepLoja.setText(objLojaDto.getCepLoja());
             }
 
-            else if (consulta == LojaEnums.NAO_CADASTRADA.toString()) {
+            else if (consulta == LojaEnums.NAO_CADASTRADA) {
                 LojaAlerts.lojaNaoCadastradaAlert();
                 txfNomeLoja.clear();
                 txfCnpjLoja.clear();

@@ -6,17 +6,17 @@ import model.dto.LojaDto;
 
 public class LojaBo {
 
-    private String verificaExisteLoja;
+    private LojaEnums verificaExisteLoja;
 
-    public String adicionar(LojaDto objLojaDto) {
+    public LojaEnums adicionar(LojaDto objLojaDto) {
         LojaDao objLojaDao = new LojaDao();
-        verificaExisteLoja = objLojaDao.consulta(objLojaDto, LojaEnums.VERIFICA_EXISTE.toString());
+        verificaExisteLoja = objLojaDao.consulta(objLojaDto, LojaEnums.VERIFICA_EXISTE);
 
-        if (verificaExisteLoja == LojaEnums.JA_CADASTRADA.toString()){
+        if (verificaExisteLoja == LojaEnums.JA_CADASTRADA){
             return verificaExisteLoja;
         }
 
-        else if(verificaExisteLoja == LojaEnums.NAO_CADASTRADA.toString()){
+        else if(verificaExisteLoja == LojaEnums.NAO_CADASTRADA){
             return objLojaDao.adiciona(objLojaDto);
         }
 
@@ -25,11 +25,11 @@ public class LojaBo {
         }
     }
 
-    public String apagar(LojaDto objLojaDto){
+    public LojaEnums apagar(LojaDto objLojaDto){
         LojaDao objLojaDao = new LojaDao();
-        String apagar = objLojaDao.consulta(objLojaDto, LojaEnums.VERIFICA_EXISTE.toString());
+        LojaEnums apagar = objLojaDao.consulta(objLojaDto, LojaEnums.VERIFICA_EXISTE);
 
-        if (apagar == LojaEnums.JA_CADASTRADA.toString()){
+        if (apagar == LojaEnums.JA_CADASTRADA){
             return objLojaDao.apagar(objLojaDto);
         }
 
@@ -38,9 +38,9 @@ public class LojaBo {
         }        
     }
 
-    public String consultar(LojaDto objLojaDto){
+    public LojaEnums consultar(LojaDto objLojaDto){
         LojaDao objLojaDao = new LojaDao();
-        return objLojaDao.consulta(objLojaDto, LojaEnums.CONSULTA.toString());
+        return objLojaDao.consulta(objLojaDto, LojaEnums.CONSULTA);
     }
     
 }

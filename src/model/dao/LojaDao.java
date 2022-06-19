@@ -15,7 +15,7 @@ public class LojaDao {
     private PreparedStatement st;
     private ResultSet rs;
 
-    public String consulta(LojaDto objLojaDto, String tipoConsulta) {
+    public LojaEnums consulta(LojaDto objLojaDto, LojaEnums tipoConsulta) {
         String sqlConsulta = DB.loadSql("consultaLoja");
 
         try {
@@ -26,9 +26,9 @@ public class LojaDao {
             rs = st.executeQuery();
             
             if(rs.isBeforeFirst()){
-                if(tipoConsulta == "VERIFICA_EXISTE"){
+                if(tipoConsulta == LojaEnums.VERIFICA_EXISTE){
                     DB.closeAll(st, rs);
-                    return LojaEnums.JA_CADASTRADA.toString();                    
+                    return LojaEnums.JA_CADASTRADA;                    
                 }
 
                 else{
@@ -39,28 +39,28 @@ public class LojaDao {
                         objLojaDto.setNumeroLoja(rs.getString("numero"));
                         objLojaDto.setCepLoja(rs.getString("cep"));
                         DB.closeAll(st, rs);
-                        return LojaEnums.CONSULTADA.toString();
+                        return LojaEnums.CONSULTADA;
                     }   
                 }
             }
 
             else{
                 DB.closeAll(st, rs);
-                return LojaEnums.NAO_CADASTRADA.toString();
+                return LojaEnums.NAO_CADASTRADA;
             }
         }
 
         catch (SQLException e) {
             e.printStackTrace();
             DB.closeAll(st, rs);
-            return LojaEnums.ERRO_GENERICO.toString();
+            return LojaEnums.ERRO_GENERICO;
         }
 
         DB.closeAll(st, rs);
-        return LojaEnums.ERRO_GENERICO.toString();
+        return LojaEnums.ERRO_GENERICO;
     }
 
-    public String adiciona(LojaDto objLojaDto) {
+    public LojaEnums adiciona(LojaDto objLojaDto) {
         String sqlAdicionaLoja = DB.loadSql("insertLoja");
 
         try {
@@ -74,17 +74,17 @@ public class LojaDao {
             st.setString(6, objLojaDto.getCepLoja());
             st.executeUpdate();
             DB.closeAll(st, rs);
-            return LojaEnums.SUCESSO_CADASTRO.toString();
+            return LojaEnums.SUCESSO_CADASTRO;
         }
 
         catch (SQLException e) {
             e.printStackTrace();
             DB.closeAll(st, rs);
-            return LojaEnums.ERRO_GENERICO.toString();
+            return LojaEnums.ERRO_GENERICO;
         }
     }
 
-    public String apagar(LojaDto objLojaDto) {
+    public LojaEnums apagar(LojaDto objLojaDto) {
         String sqlDeleteLoja = DB.loadSql("deleteLoja");
 
         try {
@@ -93,13 +93,13 @@ public class LojaDao {
             st.setString(1, objLojaDto.getCodigoLoja());
             st.executeUpdate();
             DB.closeAll(st, rs);
-            return LojaEnums.LOJA_APAGADA.toString();
+            return LojaEnums.LOJA_APAGADA;
         }
 
         catch (Exception e) {
             e.printStackTrace();
             DB.closeAll(st, rs);
-            return LojaEnums.ERRO_GENERICO.toString();
+            return LojaEnums.ERRO_GENERICO;
         }
     }
 
