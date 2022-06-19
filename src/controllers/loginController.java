@@ -1,6 +1,7 @@
 package controllers;
 
 import alerts.LoginAlerts;
+import enums.LoginEnums;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,21 +35,19 @@ public class LoginController {
             objUsuarioDto.setSenha(password.getText());
 
             LoginBo objUsuarioBo = new LoginBo();
-            String consulta = objUsuarioBo.validaSenha(objUsuarioDto);
+            LoginEnums consulta = objUsuarioBo.validaSenha(objUsuarioDto);
 
-            if(consulta == "NAO_VALIDADO"){
+            if(consulta == LoginEnums.NAO_VALIDADO){
                 LoginAlerts.loginErrorAlert();
             }
 
-            else if(consulta == "VALIDADO"){
+            else if(consulta == LoginEnums.VALIDADO){
                 App.changeScreen(Screens.TELA_INICIAL);
             }
 
             else {
                 LoginAlerts.loginErrorConsultAlert();
-            }
-            
-        }      
-
+            }            
+        }
     }
 }

@@ -14,7 +14,7 @@ public class LoginDao {
     private PreparedStatement st;
     private ResultSet rs;
 
-    public String validaUsuario(LoginDto objUsuarioDto) {
+    public LoginEnums validaUsuario(LoginDto objUsuarioDto) {
         String usuario = objUsuarioDto.getUsuario();
         String senha = objUsuarioDto.getSenha();
         String senhaCriptoBanco = null;
@@ -35,12 +35,12 @@ public class LoginDao {
                 if(senha.equals(senhaCriptoBanco)) {
                     DB.closeAll(st, rs);
 
-                    return LoginEnums.VALIDADO.toString();                 
+                    return LoginEnums.VALIDADO;                 
                 }
 
                 else {
                     DB.closeAll(st, rs);
-                    return LoginEnums.NAO_VALIDADO.toString();
+                    return LoginEnums.NAO_VALIDADO;
                 }
             }                           
         }
@@ -48,9 +48,9 @@ public class LoginDao {
         catch (SQLException e) {
             e.printStackTrace();
             DB.closeAll(st, rs);
-            return LoginEnums.ERRO_GENERICO.toString();
+            return LoginEnums.ERRO_GENERICO;
         }
 
-        return LoginEnums.ERRO_GENERICO.toString();
+        return LoginEnums.ERRO_GENERICO;
     }     
 }

@@ -10,7 +10,7 @@ public class LoginBo {
 
     private String senha;
 
-    public String validaSenha(LoginDto objUsuarioDto) {
+    public LoginEnums validaSenha(LoginDto objUsuarioDto) {
         senha = objUsuarioDto.getSenha();
 
         try {
@@ -30,7 +30,7 @@ public class LoginBo {
 
         catch(Exception e) {
             e.printStackTrace();
-            return LoginEnums.ERRO_GENERICO.toString();
+            return LoginEnums.ERRO_GENERICO;
         }
     }
     
