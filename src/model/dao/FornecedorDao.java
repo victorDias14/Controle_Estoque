@@ -17,7 +17,7 @@ public class FornecedorDao {
     private PreparedStatement st;
     private ResultSet rs;
 
-    public String consultar(FornecedorDto objFornecedorDto, String tipoConsulta) {
+    public FornecedorEnums consultar(FornecedorDto objFornecedorDto, String tipoConsulta) {
         cnpj = objFornecedorDto.getCnpj();
 
         String sqlVerifica = DB.loadSql("verificaExisteFornecedor");
@@ -30,7 +30,7 @@ public class FornecedorDao {
 
             if (rs.isBeforeFirst() && tipoConsulta == "VERIFICA_EXISTE") {
                 DB.closeAll(st, rs);
-                return FornecedorEnums.JA_CADASTRADO.toString();
+                return FornecedorEnums.JA_CADASTRADO;
             }
 
             else if(rs.isBeforeFirst() && tipoConsulta == "CONSULTA"){
@@ -39,23 +39,23 @@ public class FornecedorDao {
                 }
 
                 DB.closeAll(st, rs);
-                return FornecedorEnums.SUCESSO_CONSULTA.toString();
+                return FornecedorEnums.SUCESSO_CONSULTA;
             }
 
             else {
                 DB.closeAll(st, rs);
-                return FornecedorEnums.NAO_CADASTRADO.toString();
+                return FornecedorEnums.NAO_CADASTRADO;
             }
         }
 
         catch (SQLException e) {
             e.printStackTrace();
             DB.closeAll(st, rs);
-            return FornecedorEnums.ERRO_GENERICO.toString();
+            return FornecedorEnums.ERRO_GENERICO;
         }
     }
 
-    public String adicionar(FornecedorDto objFornecedorDto) {
+    public FornecedorEnums adicionar(FornecedorDto objFornecedorDto) {
         nomeFornecedor = objFornecedorDto.getNomeFornecedor();
         cnpj = objFornecedorDto.getCnpj();
 
@@ -69,17 +69,17 @@ public class FornecedorDao {
             st.executeUpdate();
 
             DB.closeAll(st, rs);
-            return FornecedorEnums.SUCESSO_CADASTRAR.toString();
+            return FornecedorEnums.SUCESSO_CADASTRAR;
         }
 
         catch (SQLException e) {
             e.printStackTrace();
             DB.closeAll(st, rs);
-            return FornecedorEnums.ERRO_GENERICO.toString();
+            return FornecedorEnums.ERRO_GENERICO;
         }
     }
 
-    public String apagar(FornecedorDto objFornecedorDto) {
+    public FornecedorEnums apagar(FornecedorDto objFornecedorDto) {
 
         cnpj = objFornecedorDto.getCnpj();
         String sqlInsertFornecedor = DB.loadSql("deleteFornecedor");
@@ -91,12 +91,12 @@ public class FornecedorDao {
             st.executeUpdate();
 
             DB.closeAll(st, rs);
-            return FornecedorEnums.SUCESSO_APAGAR.toString();
+            return FornecedorEnums.SUCESSO_APAGAR;
         }
 
         catch (SQLException e) {
             e.printStackTrace();
-            return FornecedorEnums.ERRO_GENERICO.toString();
+            return FornecedorEnums.ERRO_GENERICO;
         }
     }
 }

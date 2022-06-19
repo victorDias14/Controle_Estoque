@@ -1,6 +1,7 @@
 package controllers;
 
 import alerts.FornecedorAlerts;
+import enums.FornecedorEnums;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,13 +39,13 @@ public class FornecedorController {
             objFornecedorDto.setNomeFornecedor(txfNomeFornecedor.getText());
 
             FornecedorBo objFornecedorBo = new FornecedorBo();
-            String retornoAdicionar = objFornecedorBo.adicionar(objFornecedorDto);
+            FornecedorEnums retornoAdicionar = objFornecedorBo.adicionar(objFornecedorDto);
 
-            if(retornoAdicionar == "JA_CADASTRADO"){
+            if(retornoAdicionar == FornecedorEnums.JA_CADASTRADO){
                 FornecedorAlerts.fornecedorExisteAlert();
             }
 
-            else if(retornoAdicionar == "ERRO_GENERICO"){
+            else if(retornoAdicionar == FornecedorEnums.ERRO_GENERICO){
                 FornecedorAlerts.fornecedorErroGenericoAlert();
             }
 
@@ -70,13 +71,13 @@ public class FornecedorController {
             objFornecedorDto.setCnpj(Long.parseLong(txfCnpj.getText()));
 
             FornecedorBo objFornecedorBo = new FornecedorBo();
-            String retornoApagar = objFornecedorBo.apagar(objFornecedorDto);
+            FornecedorEnums retornoApagar = objFornecedorBo.apagar(objFornecedorDto);
 
-            if(retornoApagar == "SUCESSO_APAGAR"){
+            if(retornoApagar == FornecedorEnums.SUCESSO_APAGAR){
                 FornecedorAlerts.apagaFornecedorAlert();
             }
 
-            else if(retornoApagar == "NAO_CADASTRADO"){
+            else if(retornoApagar == FornecedorEnums.NAO_CADASTRADO){
                 FornecedorAlerts.fornecedorConsultaInformationAlert();
             }
 
@@ -101,13 +102,13 @@ public class FornecedorController {
             objFornecedorDto.setCnpj(Long.parseLong(txfCnpj.getText()));
 
             FornecedorBo objFornecedorBo = new FornecedorBo();
-            String retornoConsulta = objFornecedorBo.consultar(objFornecedorDto);
+            FornecedorEnums retornoConsulta = objFornecedorBo.consultar(objFornecedorDto);
 
-            if(retornoConsulta == "SUCESSO_CONSULTA"){
+            if(retornoConsulta == FornecedorEnums.SUCESSO_CONSULTA){
                 txfNomeFornecedor.setText(objFornecedorDto.getNomeFornecedor());
             }
 
-            else if(retornoConsulta == "NAO_CADASTRADO"){
+            else if(retornoConsulta == FornecedorEnums.NAO_CADASTRADO){
                 FornecedorAlerts.fornecedorConsultaInformationAlert();
             }
 
