@@ -21,7 +21,7 @@ public class ProdutoAlerts {
     public static void produtoErrorAlertGeneric() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro");
-        alert.setHeaderText("Erro ao adicionar produto");
+        alert.setHeaderText("Erro ao executar ação");
         alert.show();
     }
 
@@ -40,7 +40,7 @@ public class ProdutoAlerts {
     }
 
     public static void apagaProdutoAlert() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Sucesso");
         alert.setHeaderText("Produto apagado com sucesso.");
         alert.show();
@@ -78,6 +78,13 @@ public class ProdutoAlerts {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Produto já existe");
         alert.setHeaderText("Nome de produto já cadastrado.");
+        alert.show();
+    }
+
+    public static void produtoJaCadastradoAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Produto já existe");
+        alert.setHeaderText("Produto já cadastrado.");
         alert.show();
     }
     

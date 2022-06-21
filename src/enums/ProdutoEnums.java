@@ -1,0 +1,14 @@
+package enums;
+
+public enum ProdutoEnums {
+    CONSULTA,
+    CONSULTA_EAN,
+    CONSULTA_INTERNO,
+    PRODUTO_EXISTE,
+    CONSULTADO,
+    NAO_EXISTE,
+    ERRO_GENERICO,
+    PRODUTO_ADICIONADO,
+    PRODUTO_ALTERADO,
+    PRODUTO_APAGADO
+}

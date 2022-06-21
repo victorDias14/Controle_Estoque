@@ -1,159 +1,61 @@
 package model.bo;
 
-import alerts.ProdutoAlerts;
+import enums.ProdutoEnums;
 import model.dao.ProdutoDao;
 import model.dto.ProdutoDto;
 
 public class ProdutoBo {
-    private String codEan;
-    private String codInterno ;
-    private String nomeProduto;
-        
-    private String codInternoBanco;
-    private String codEanBanco;
-    private String nomeProdutoBanco;
 
-    private int retornoCamposVazios;
-    private int retornoProdutoExiste;
-    
-    public int verificaProdutoExiste(ProdutoDto objProdutoDto){
-        codEan = objProdutoDto.getCodEan();
-        codInterno = objProdutoDto.getCodInterno();
-        nomeProduto = objProdutoDto.getNomeProduto();
-        
-        codInternoBanco = objProdutoDto.getCodInternoBanco();
-        codEanBanco = objProdutoDto.getCodEanBanco();
-        nomeProdutoBanco = objProdutoDto.getNomeProdutoBanco();
+    private ProdutoEnums retornoExiste;
 
-        if(codInternoBanco.equals(codInterno)){
-            return 0;
-        }
+    public ProdutoEnums adicionar(ProdutoDto objProdutoDto) {
+        ProdutoDao objProdutoDao = new ProdutoDao();
+        ProdutoEnums retornoExiste = objProdutoDao.consultaAdicionar(objProdutoDto);
 
-        else if(codEanBanco.equals(codEan)) { 
-            return 1;
-        }
-
-        else if(nomeProdutoBanco.equals(nomeProduto)) {
-            return 2;
+        if (retornoExiste == ProdutoEnums.NAO_EXISTE) {
+            return objProdutoDao.adicionaProduto(objProdutoDto);
         }
 
         else {
-            return 3;
+            return retornoExiste;
         }
     }
 
-    int verificaCamposVazios(ProdutoDto objProdutoDto){
-        codEan = objProdutoDto.getCodEan();
-        codInterno = objProdutoDto.getCodInterno();
-        nomeProduto = objProdutoDto.getNomeProduto();
+    public ProdutoEnums consultaInterno(ProdutoDto objProdutoDto) {
+        ProdutoDao objProdutoDao = new ProdutoDao();
+        return objProdutoDao.consultaInterno(objProdutoDto);
+    }
 
-        if (codEan == "" || codInterno == "" || nomeProduto == "") {
-            return 0;
+    public ProdutoEnums consultaEan(ProdutoDto objProdutoDto) {
+        ProdutoDao objProdutoDao = new ProdutoDao();
+        return objProdutoDao.consultaEan(objProdutoDto);
+    }
+
+    public ProdutoEnums alterar(ProdutoDto objProdutoDto) {
+        ProdutoDao objProdutoDao = new ProdutoDao();
+        retornoExiste = objProdutoDao.adicionaProduto(objProdutoDto);
+
+        if (retornoExiste == ProdutoEnums.PRODUTO_EXISTE) {
+            return objProdutoDao.alterar(objProdutoDto);
         }
 
         else {
-            return 1;
+            return retornoExiste;
         }
+
     }
 
-    public void adicionar(ProdutoDto objProdutoDto){
-        retornoCamposVazios = verificaCamposVazios(objProdutoDto);
+    public ProdutoEnums apagar(ProdutoDto objProdutoDto) {
 
-        if(retornoCamposVazios == 0){
-            ProdutoAlerts.produtoErrorAlertEmptyField();
+        ProdutoDao objProdutoDao = new ProdutoDao();
+        retornoExiste = objProdutoDao.consultaAdicionar(objProdutoDto);
+
+        if (retornoExiste == ProdutoEnums.PRODUTO_EXISTE) {
+            return objProdutoDao.apagar(objProdutoDto);
         }
 
         else {
-            ProdutoDao objProdutoDao = new ProdutoDao();
-            objProdutoDao.verificaProdutoExiste(objProdutoDto);
-            retornoProdutoExiste = verificaProdutoExiste(objProdutoDto);
-
-            if (retornoCamposVazios == 0){
-                ProdutoAlerts.codInternoExisteAlert();
-            }
-
-            else if (retornoCamposVazios == 1){
-                ProdutoAlerts.codEanExisteAlert();
-            }
-
-            else if (retornoCamposVazios == 2) {
-                ProdutoAlerts.nomeProdutoExisteAlert();
-            }
-
-            else {
-                objProdutoDao.adicionaProduto(objProdutoDto);
-            }            
-        }        
-    }
-
-    public void consulta(ProdutoDto objProdutoDto, String tipoConsulta) {
-        
-        if (tipoConsulta == "interno") {
-            codInterno = objProdutoDto.getCodInterno();
-
-            if (codInterno == "") {
-                ProdutoAlerts.consultaProdutoCodigoErrorAlert();
-            }
-
-            else {
-                ProdutoDao objProdutoDao = new ProdutoDao();
-                objProdutoDao.consulta(objProdutoDto, "consultaInterno", codInterno);
-            }
-        }
-
-        else if (tipoConsulta == "ean"){
-            codEan = objProdutoDto.getCodEan();
-
-            if (codEan == "") {
-                ProdutoAlerts.consultaProdutoCodigoErrorAlert();
-            }
-
-            else {
-                ProdutoDao objProdutoDao = new ProdutoDao();
-                objProdutoDao.consulta(objProdutoDto, "consultaEan", codEan);
-            }
-        }
-    }
-
-    public void alterar(ProdutoDto objProdutoDto) {
-        retornoCamposVazios = verificaCamposVazios(objProdutoDto);
-
-        if (retornoCamposVazios == 0){
-            ProdutoAlerts.produtoErrorAlertEmptyField();
-        }
-
-        else {
-            ProdutoDao objProdutoDao = new ProdutoDao();
-            retornoProdutoExiste = objProdutoDao.verificaProdutoExiste(objProdutoDto);
-
-            if(retornoProdutoExiste == 1){
-                objProdutoDao.alterar(objProdutoDto);
-            }
-
-            else {
-                ProdutoAlerts.consultaProdutoErrorAlert();
-            }
-        }        
-    }
-
-    public void apagar(ProdutoDto objProdutoDto) {
-        retornoCamposVazios = verificaCamposVazios(objProdutoDto);
-
-        if(retornoCamposVazios == 0){
-            ProdutoAlerts.produtoErrorAlertEmptyField();
-        }
-
-        else {
-            ProdutoDao objProdutoDao = new ProdutoDao();
-            retornoProdutoExiste = objProdutoDao.verificaProdutoExiste(objProdutoDto);
-
-            if(retornoProdutoExiste == 1){
-                objProdutoDao.apagar(objProdutoDto);
-            }
-
-            else {
-                ProdutoAlerts.apagaProdutoErrorAlert();
-            }
+            return retornoExiste;
         }
     }
 }

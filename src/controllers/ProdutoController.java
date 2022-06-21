@@ -1,5 +1,10 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import alerts.ProdutoAlerts;
+import enums.ProdutoEnums;
 import enums.Screens;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,96 +47,196 @@ public class ProdutoController {
     @FXML
     private TextField txfValorVenda;
 
-    private String codEan;
-    private String codInterno;
-    private String nomeProduto;
-    private String valorVenda;
+    private ProdutoEnums retornoConsulta;
 
     @FXML
     void adicionar(ActionEvent event) {
-        codEan = txfCodEan.getText();
-        codInterno = txfCodInterno.getText();
-        nomeProduto = txfNomeProduto.getText();
-        valorVenda = txfValorVenda.getText();
+        int retornoCamposVazios = verificaCamposVazios();
 
-        ProdutoDto objProdutoDto = new ProdutoDto();
-        objProdutoDto.setCodEan(codEan);
-        objProdutoDto.setCodInterno(codInterno);
-        objProdutoDto.setNomeProduto(nomeProduto);
-        objProdutoDto.setValorVenda(valorVenda);
+        if (retornoCamposVazios == 1) {
+            ProdutoDto objProdutoDto = new ProdutoDto();
+            objProdutoDto.setCodEan(txfCodEan.getText());
+            objProdutoDto.setCodInterno(txfCodInterno.getText());
+            objProdutoDto.setNomeProduto(txfNomeProduto.getText());
+            objProdutoDto.setValorVenda(txfValorVenda.getText());
 
-        ProdutoBo objProdutoBo = new ProdutoBo();
-        objProdutoBo.adicionar(objProdutoDto);
+            ProdutoBo objProdutoBo = new ProdutoBo();
+            ProdutoEnums retornoAdicionar = objProdutoBo.adicionar(objProdutoDto);
+
+            switch (retornoAdicionar) {
+                case PRODUTO_ADICIONADO:
+                    ProdutoAlerts.produtoAlert();
+                    break;
+
+                case PRODUTO_EXISTE:
+                    ProdutoAlerts.produtoJaCadastradoAlert();
+                    break;
+
+                case ERRO_GENERICO:
+                    ProdutoAlerts.produtoErrorAlertGeneric();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        else {
+            ProdutoAlerts.produtoErrorAlertEmptyField();
+        }
     }
 
     @FXML
-    void consultar(ActionEvent event) {
+    void consultarInterno(ActionEvent event) {
 
-        ProdutoDto objProdutoDto = new ProdutoDto();
-        String tipoConsulta = null;
-
-        txfCodInterno.setEditable(false);
-        txfCodEan.setEditable(false);
-
-        if (event.getSource() == btnConsultarInterno) {
-            codInterno = txfCodInterno.getText();
-            objProdutoDto.setCodInterno(codInterno);
-            tipoConsulta = "interno";
+        if(txfCodInterno.getText().isBlank()){
+            ProdutoAlerts.consultaProdutoCodigoErrorAlert();
         }
 
-        else if (event.getSource() == btnConsultarEan) {
-            codEan = txfCodEan.getText();
-            objProdutoDto.setCodEan(codEan);
-            tipoConsulta = "ean";
-        }
+        else{
+            ProdutoDto objProdutoDto = new ProdutoDto();
+            objProdutoDto.setCodInterno(txfCodInterno.getText());
 
-        ProdutoBo objProdutoBo = new ProdutoBo();
-        objProdutoBo.consulta(objProdutoDto, tipoConsulta);
+            ProdutoBo objProdutoBo = new ProdutoBo();
+            retornoConsulta = objProdutoBo.consultaInterno(objProdutoDto);
 
-        preencheCamposConsulta(objProdutoDto);        
+            switch(retornoConsulta){
+                case PRODUTO_EXISTE:
+                    preencheCamposConsulta(objProdutoDto);
+                    break;
+
+                case NAO_EXISTE:
+                    ProdutoAlerts.consultaProdutoErrorAlert();
+                    limpaCampos();
+                    break;
+
+                case ERRO_GENERICO:
+                    ProdutoAlerts.produtoErrorAlertGeneric();
+                    break;
+
+                default:
+                    break;
+            }
+        }        
     }
 
     @FXML
-    void alterar(ActionEvent event) {
+    void consultarEan(ActionEvent event) {
 
-        codInterno = txfCodInterno.getText();
-        codEan = txfCodEan.getText();
-        nomeProduto = txfNomeProduto.getText();
-        valorVenda = txfValorVenda.getText();
+        if(txfCodEan.getText().isBlank()){
+            ProdutoAlerts.consultaProdutoCodigoErrorAlert();
+        }
 
-        ProdutoDto objProdutoDto = new ProdutoDto();
-        objProdutoDto.setCodInterno(codInterno);
-        objProdutoDto.setCodEan(codEan);
-        objProdutoDto.setNomeProduto(nomeProduto);
-        objProdutoDto.setValorVenda(valorVenda);
+        else{
+            ProdutoDto objProdutoDto = new ProdutoDto();
+            objProdutoDto.setCodEan(txfCodEan.getText());
 
-        ProdutoBo objProdutoBo = new ProdutoBo();
-        objProdutoBo.alterar(objProdutoDto);
+            ProdutoBo objProdutoBo = new ProdutoBo();
+            retornoConsulta = objProdutoBo.consultaEan(objProdutoDto);
+
+            switch (retornoConsulta) {
+                case PRODUTO_EXISTE:
+                    preencheCamposConsulta(objProdutoDto);
+                    break;
+
+                case NAO_EXISTE:
+                    ProdutoAlerts.consultaProdutoErrorAlert();
+                    limpaCampos();
+                    break;
+
+                case ERRO_GENERICO:
+                    ProdutoAlerts.produtoErrorAlertGeneric();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         
     }
 
     @FXML
+    void alterar(ActionEvent event) {
+        int retornoCamposVazios = verificaCamposVazios();
+
+        if (retornoCamposVazios == 1) {
+            ProdutoDto objProdutoDto = new ProdutoDto();
+            objProdutoDto.setCodInterno(txfCodInterno.getText());
+            objProdutoDto.setCodEan(txfCodEan.getText());
+            objProdutoDto.setNomeProduto(txfNomeProduto.getText());
+            objProdutoDto.setValorVenda(txfValorVenda.getText());
+
+            ProdutoBo objProdutoBo = new ProdutoBo();
+            ProdutoEnums retornoAlterar = objProdutoBo.alterar(objProdutoDto);
+
+            switch (retornoAlterar) {
+                case NAO_EXISTE:
+                    ProdutoAlerts.consultaProdutoErrorAlert();
+                    break;
+
+                case PRODUTO_ALTERADO:
+                    ProdutoAlerts.alteraProdutoAlert();
+                    break;
+
+                case ERRO_GENERICO:
+                    ProdutoAlerts.produtoErrorAlertGeneric();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        else {
+            ProdutoAlerts.produtoErrorAlertEmptyField();
+        }
+
+    }
+
+    @FXML
     void apagar(ActionEvent event) {
-        codEan = txfCodEan.getText();
-        codInterno = txfCodInterno.getText();
 
-        ProdutoDto objProdutoDto = new ProdutoDto();
-        objProdutoDto.setCodEan(codEan);
-        objProdutoDto.setCodInterno(codInterno);
+        if (txfCodEan.getText().isBlank() || txfCodInterno.getText().isBlank()) {
+            ProdutoAlerts.produtoErrorAlertEmptyField();
+        }
 
-        ProdutoBo objProdutoBo = new ProdutoBo();
-        objProdutoBo.apagar(objProdutoDto);
+        else {
+            ProdutoDto objProdutoDto = new ProdutoDto();
+            objProdutoDto.setCodEan(txfCodEan.getText());
+            objProdutoDto.setCodInterno(txfCodInterno.getText());
 
-        limpaCampos();
-    }            
+            ProdutoBo objProdutoBo = new ProdutoBo();
+            ProdutoEnums retornoApagar = objProdutoBo.apagar(objProdutoDto);
+
+            switch(retornoApagar){
+                case NAO_EXISTE:
+                    ProdutoAlerts.consultaProdutoErrorAlert();
+                    break;
+
+                case PRODUTO_APAGADO:
+                    ProdutoAlerts.apagaProdutoAlert();
+                    limpaCampos();
+                    break;
+
+                case ERRO_GENERICO:
+                    ProdutoAlerts.produtoErrorAlertGeneric();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
 
     @FXML
     void voltar(ActionEvent event) {
 
-        if(txfCodEan.editableProperty().getValue().equals(false) || txfCodInterno.editableProperty().getValue().equals(false)){
+        if (txfCodEan.editableProperty().getValue().equals(false)
+                || txfCodInterno.editableProperty().getValue().equals(false)) {
             txfCodInterno.setEditable(true);
             txfCodEan.setEditable(true);
-            
+
             limpaCampos();
         }
 
@@ -144,14 +249,30 @@ public class ProdutoController {
         txfCodInterno.setText(objProdutoDto.getCodInterno());
         txfCodEan.setText(objProdutoDto.getCodEan());
         txfNomeProduto.setText(objProdutoDto.getNomeProduto());
-        txfValorVenda.setText(objProdutoDto.getValorVenda());        
+        txfValorVenda.setText(objProdutoDto.getValorVenda());
     }
 
-    void limpaCampos(){
+    void limpaCampos() {
         txfCodInterno.clear();
         txfCodEan.clear();
         txfNomeProduto.clear();
         txfQuantidade.clear();
         txfValorVenda.clear();
+    }
+
+    int verificaCamposVazios() {
+        List<String> infos = new ArrayList<String>();
+        infos.add(txfCodEan.getText());
+        infos.add(txfCodInterno.getText());
+        infos.add(txfNomeProduto.getText());
+        infos.add(txfValorVenda.getText());
+
+        for (String i : infos) {
+            if (i.isBlank()) {
+                return 0;
+            }
+        }
+
+        return 1;
     }
 }
